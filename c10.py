@@ -82,9 +82,9 @@ class Application(Frame):
         def getCircuits(self):
             self.x = self.getCircuit.get()
             return self.x     
-
-        if (getPVC(self)=="-"):
-            self.error = Label (master, text = "Either CableType or XLPE has to be selected", height=2, width=35, fg="red") #Label
+        
+        if (getCircuits(self)==""):
+            self.error = Label (master, text = "A circuit value has to be selected", height=2, width=35, fg="red") #Label
             self.error.grid(row=4, column =1)
 
         else:
@@ -103,6 +103,7 @@ class Application(Frame):
         def circuitNo(self):
     
             if (getConduitType(self)=="Heavy duty rigid UPVC conduit"):
+
                 if ((getPVC(self)=="25" or getPVC(self)=="35" or getPVC(self)=="50" )
                     and getCircuits(self) == "0"):
                     return '20'
@@ -186,6 +187,7 @@ class Application(Frame):
                 
                 if ((getPVC(self)=="25") and getCircuits(self) == "5"):
                     return "50"
+                
                 if ((getPVC(self)=="120") and getCircuits(self) == "5"):
                     return "80(NZ)"
                 if ((getPVC(self)=="150") and getCircuits(self) == "5"):
