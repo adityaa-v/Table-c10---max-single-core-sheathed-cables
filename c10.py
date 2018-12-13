@@ -11,17 +11,16 @@ class Application(Frame):
     def __init__(self, master):
         """ Initialise the Frame. """
         super(Application, self).__init__(master)
-        self.task = ""
-        self.UserIn = StringVar()
+        self.UserIn = IntVar()
         self.grid()
         self.create_widgets()
 
     def create_widgets(self): 
-        self.conduitLbl = Label (self, text = "Type of Conduit", 
-        height=2, width=20)#Label
+
+        self.conduitLbl = Label (self, text = "Type of Conduit", height=2, width=20)#Label
         self.conduitLbl.grid(row=0, column = 0)
 
-        self.conduit = StringVar(master)
+        self.conduit = StringVar(master) ### OPTION MENU FOR CONIOT TYPE
         self.conduit.set("Heavy duty rigid UPVC conduit") # default value
         self.conduitOptions = OptionMenu(master, self.conduit, *conduitType)
         self.conduitOptions.config(width=28)
@@ -29,8 +28,8 @@ class Application(Frame):
         
         self.PVCLabel = Label (master, text = "Cable Type", height=2, width=20)#Label
         self.PVCLabel.grid(row=1, column = 0)
+        
         self.cable = StringVar(master)
-
         self.cable.set("-") # default value
         self.PVCom = OptionMenu(master, self.cable, *CableType, )
         self.PVCom.config(width=15)
@@ -39,25 +38,27 @@ class Application(Frame):
         self.circuitLbl = Label (master, text = "Number of Circuits:", height=1, width=20) #Label
         self.circuitLbl.grid(row=2, column = 0)
 
-        self.circuit = IntVar(master)
-        self.getCircuit = Entry (master) #text box 
-        self.getCircuit.grid(row=2, column=1)  
-        self.circuit.set("-")        
+        self.getCircuit = IntVar()  
+        self.getCircuit = Entry (master) ######## ENTRY BOX
+        self.getCircuit.grid(row=2, column=1)        
             
-        btn = Button(master, text="Calculate", bg="light grey", command=self.onButtonClick)
-        btn.grid(row = 3,column=1)           
+        self.btn = Button(master, text="Calculate", bg="light grey", command=self.onButtonClick)
+        self.btn.grid(row = 3,column=1)           
+
         self.conduitTypeResult = Label (master, text = "Conduit Type-> ", height=1, width=40) #Label
-        self.conduitTypeResult.grid(row=0, column =2)    
+        self.conduitTypeResult.grid(row=0, column =2) 
+
         self.PVCResult = Label (master, text = "Cable Type-> ", height=2, width=25) #Label
         self.PVCResult.grid(row=1, column =2)    
+
         self.circuitNo = Label (master, text = "Number of Circuits-> ", height=2, width=25) #Label
         self.circuitNo.grid(row=2, column =2)   
 
         self.conduitResult = Label (master, text = "-", height=2, width=40, font='Helvetica 9 bold') #Label
         self.conduitResult.grid(row=3, column =2)    
 
-        close = Button(master, text="Close", bg="light grey", command=master.destroy)
-        close.grid(row = 4,column=0) 
+        self.close = Button(master, text="Close", bg="light grey", command=master.destroy)
+        self.close.grid(row = 4,column=0) 
    
         def reset():
              self.PVCResult.configure(text="" )
@@ -66,784 +67,803 @@ class Application(Frame):
              self.conduit.set("Heavy duty rigid UPVC conduit")
              self.cable.set("-")
 
-        tableview = Button(master, text="Reset", bg="light grey", command=reset)
-        tableview.grid(row = 3,column=0) 
+        self.tableview = Button(master, text="Reset", bg="light grey", command=reset)
+        self.tableview.grid(row = 3,column=0) 
 
     def onButtonClick(self):
         
+        #get values
         def getConduitType(self):
             self.x = self.conduit.get()
             return self.x
-
-        def getPVC(self):
+        def getCable(self):
             self.x = self.cable.get()
-            return self.x      
-        
-        def getCircuits(self):
+            return self.x             
+        def getCircuitState(self):
             self.x = self.getCircuit.get()
-            return self.x     
+            return int(self.x)
+        #end
+
+        #error messages 
+        # if len(getCircuitState(self))==0:
+        #     self.conduitResult.configure(text="Circuit has not been entered ", bg='orange' )       
+        # if (getCable(self)=="-"):
+        #     self.conduitResult.configure(text="Cable length has not been selected ", bg='orange' )      
+        # if len(getCircuitState(self))==0:
+        #     if (getCable(self)=="-"):
+        #         self.conduitResult.configure(text="Please enter some values", bg='red' )
         
-        if (getCircuits(self)==""):
-            self.error = Label (master, text = "A circuit value has to be selected", height=2, width=35, fg="red") #Label
-            self.error.grid(row=4, column =1)
+        #end       
 
-        else:
-            self.error = Label (master, text = "", height=2, width=35, fg="red") #Label
-            self.error.grid(row=4, column =1)
+        self.conduitTypeResult.configure(text="Conduit Type:  " + self.conduit.get(), font='Helvetica 9 bold')
 
-        self.conduitTypeResult.configure(text="Conduit Type:  " +self.conduit.get(), font='Helvetica 9 bold')
-
-        if(getPVC(self)=="-"):
-            self.PVCResult.configure(text="-" )
+        if (getCable(self)=="-"):
+            self.PVCResult.configure(text="-")
         else:
             self.PVCResult.configure(text="CableType:  " + self.cable.get(),font='Helvetica 9 bold' )
         
-        self.circuitNo.configure(text="Number of Circuits:  "+self.getCircuit.get(), font='Helvetica 9 bold')
+        self.circuitNo.configure(text="Number of Circuits:  "+ self.getCircuit.get(), font='Helvetica 9 bold')
 
         def circuitNo(self):
-    
+
             if (getConduitType(self)=="Heavy duty rigid UPVC conduit"):
 
-                if ((getPVC(self)=="25" or getPVC(self)=="35" or getPVC(self)=="50" )
-                    and getCircuits(self) == "0"):
+
+                if(getCable(self)=="1" and getCircuitState(self) <= int("5")):
+                    return "20"
+                
+                if(getCable(self)=="1" and getCircuitState(self)<= int("9")):
+                    return "25"
+                
+                if(getCable(self)=="1" and getCircuitState(self)<= int("16")):
+                    return "32"
+            
+                if(getCable(self)=="1" and getCircuitState(self)<= int("26")):
+                    return "40"
+                
+                if(getCable(self)=="1" and getCircuitState(self)<= int("43")):
+                    return "50"
+                
+                if(getCable(self)=="1" and getCircuitState(self)<= int("71")):
+                    return "63"
+                
+                if(getCable(self)=="1" and getCircuitState(self) >= int("99")):
+                    return "80(NZ), 80(AUS), 100(NZ), 100(AUS), 125 or 150"
+        
+                if ((getCable(self)=="25" or getCable(self)=="35" or getCable(self)>=int("50") )
+                    and getCircuitState(self)<= "0"):
                     return '20'
-                if ((getPVC(self)=="70" or getPVC(self)=="95") and getCircuits(self) == "0"):
+                
+                if ((getCable(self)=="70" or getCable(self)=="95") and getCircuitState(self)<= int("0")):
                     return "20 or 25"
-                if ((getPVC(self)=="120" or getPVC(self)=="150") and getCircuits(self) == "0"):
+                if ((getCable(self)=="120" or getCable(self)=="150") and getCircuitState(self)<= int("0")):
                     return "20, 25 or 32"
-                if ((getPVC(self)=="185" or 
-                getPVC(self)=="240" or getPVC(self)=="300") and getCircuits(self) == "0"):
+                if ((getCable(self)=="185" or 
+                getCable(self)=="240" or getCable(self)=="300") and getCircuitState(self)<= int("0")):
                     return "20, 25, 32 or 40" 
-                if ((getPVC(self)=="400" or getPVC(self)=="500") and getCircuits(self) == "0"):
+                if ((getCable(self)=="400" or getCable(self)=="500") and getCircuitState(self)<= int("0")):
                     return "20, 25, 32, 40 or 50"    
-                if ((getPVC(self)=="630") and getCircuits(self) == "0"):
+                if ((getCable(self)=="630") and getCircuitState(self)<= int("0")):
                     return "20, 25, 32, 40, 50 or 63"
 
-                if ((getPVC(self)=="25" or getPVC(self)=="35")
-                    and getCircuits(self) == "1"):
+                if ((getCable(self)=="25" or getCable(self)<= int("35"))
+                    and getCircuitState(self)<= "1"):
                     return '25 or 32'
-                if ((getPVC(self)=="50") and getCircuits(self) == "1"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= int("1")):
                     return "25,	32 or 40"
-                if ((getPVC(self)=="70") and getCircuits(self) == "1"):
+                if ((getCable(self)=="70") and getCircuitState(self)<= int("1")):
                     return "25,	32,	40 or 50"
-                if ((getPVC(self)=="95") and getCircuits(self) == "1"):
+                if ((getCable(self)=="95") and getCircuitState(self)<= int("1")):
                     return "32 or 40" 
-                if ((getPVC(self)=="120" or getPVC(self)=="150") and getCircuits(self) == "1"):
+                if ((getCable(self)=="120" or getCable(self)=="150") and getCircuitState(self)<= int("1")):
                     return "40 or 50"    
-                if ((getPVC(self)=="185" or 
-                getPVC(self)=="240") and getCircuits(self) == "1"):
+                if ((getCable(self)=="185" or 
+                getCable(self)=="240") and getCircuitState(self)<= int("1")):
                     return "50 or 63"
-                if ((getPVC(self)=="300") and getCircuits(self) == "1"):
+                if ((getCable(self)=="300") and getCircuitState(self)<= int("1")):
                     return "50, 63 or 80(NZ)"
-                if ((getPVC(self)=="400" or getPVC(self)=="500") and getCircuits(self) == "1"):
+                if ((getCable(self)=="400" or getCable(self)=="500") and getCircuitState(self)<= int("1")):
                     return "63 or 80(NZ) or 80(AUS)"
-                if ((getPVC(self)=="630") and getCircuits(self) == "1"):
+                if ((getCable(self)=="630") and getCircuitState(self)<= int("1")):
                     return "80(NZ), 80(AUS) or 100(NZ)"
                 
-                if ((getPVC(self)=="35") and getCircuits(self) == "2"):
+                if ((getCable(self)=="35") and getCircuitState(self)<= int(int("2"))):
                     return "40"
-                if ((getPVC(self)=="70") and getCircuits(self) == "2"):
+                if ((getCable(self)=="70") and getCircuitState(self)<= int(int("2"))):
                     return "50"
-                if ((getPVC(self)=="120") and getCircuits(self) == "2"):
+                if ((getCable(self)=="120") and getCircuitState(self)<= int("2")):
                     return "63"
-                if ((getPVC(self)=="150") and getCircuits(self) == "2"):
+                if ((getCable(self)=="150") and getCircuitState(self)<= int("2")):
                     return "150"
-                if ((getPVC(self)=="240") and getCircuits(self) == "2"):
+                if ((getCable(self)=="240") and getCircuitState(self)<= int("2")):
                     return "80(NZ)"
-                if ((getPVC(self)=="300") and getCircuits(self) == "2"):
+                if ((getCable(self)=="300") and getCircuitState(self)<= int("2")):
                     return "80(AUS)"
-                if ((getPVC(self)=="630") and getCircuits(self) == "2"):
+                if ((getCable(self)=="630") and getCircuitState(self)<= int("2")):
                     return "100(AUS)"
                 
-                if ((getPVC(self)=="25") and getCircuits(self) == "3"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= int("3")):
                     return "40"
-                if ((getPVC(self)=="50") and getCircuits(self) == "3"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= int("3")):
                     return "50"
-                if ((getPVC(self)=="95") and getCircuits(self) == "3"):
+                if ((getCable(self)=="95") and getCircuitState(self)<= int("3")):
                     return "63"
-                if ((getPVC(self)=="185") and getCircuits(self) == "3"):
+                if ((getCable(self)=="185") and getCircuitState(self)<= int("3")):
                     return "80(NZ)"
-                if ((getPVC(self)=="240") and getCircuits(self) == "3"):
+                if ((getCable(self)=="240") and getCircuitState(self)<= int("3")):
                     return "80(AUS)"
-                if ((getPVC(self)=="400" or getPVC(self)=="500") and getCircuits(self) == "3"):
+                if ((getCable(self)=="400" or getCable(self)=="500") and getCircuitState(self)<= int("3")):
                     return "100(NZ) or 100(AUS)"
-                if ((getPVC(self)=="630") and getCircuits(self) == "3"):
+                if ((getCable(self)=="630") and getCircuitState(self)<= int("3")):
                     return "125"
 
-                if ((getPVC(self)=="25") and getCircuits(self) == "4"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= "4"):
                     return "50"
-                if ((getPVC(self)=="50") and getCircuits(self) == "4"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= "4"):
                     return "63"
-                if ((getPVC(self)=="150") and getCircuits(self) == "4"):
+                if ((getCable(self)=="150") and getCircuitState(self)<= "4"):
                     return "80(NZ)"
-                if ((getPVC(self)=="185") and getCircuits(self) == "4"):
+                if ((getCable(self)=="185") and getCircuitState(self)<= "4"):
                     return "80(AUS)"
-                if ((getPVC(self)=="300") and getCircuits(self) == "4"):
+                if ((getCable(self)=="300") and getCircuitState(self)<= "4"):
                     return "100(NZ) or 100(AUS)"
-                if ((getPVC(self)=="500") and getCircuits(self) == "4"):
+                if ((getCable(self)=="500") and getCircuitState(self)<= "4"):
                     return "125"
-                if ((getPVC(self)=="630") and getCircuits(self) == "4"):
+                if ((getCable(self)=="630") and getCircuitState(self)<= "4"):
                     return "150"
                 
-                if ((getPVC(self)=="25") and getCircuits(self) == "5"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= "5"):
                     return "50"
                 
-                if ((getPVC(self)=="120") and getCircuits(self) == "5"):
+                if ((getCable(self)=="120") and getCircuitState(self)<= "5"):
                     return "80(NZ)"
-                if ((getPVC(self)=="150") and getCircuits(self) == "5"):
+                if ((getCable(self)=="150") and getCircuitState(self)<= "5"):
                     return "80(AUS)"
-                if ((getPVC(self)=="240") and getCircuits(self) == "5"):
+                if ((getCable(self)=="240") and getCircuitState(self)<= "5"):
                     return "100(NZ) or 100(AUS)"
-                if ((getPVC(self)=="400") and getCircuits(self) == "5"):
+                if ((getCable(self)=="400") and getCircuitState(self)<= "5"):
                     return "125"
                 
-                if ((getPVC(self)=="50") and getCircuits(self) == "6"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= "6"):
                     return "63"
-                if ((getPVC(self)=="95") and getCircuits(self) == "6"):
+                if ((getCable(self)=="95") and getCircuitState(self)<= "6"):
                     return "80(NZ)"
-                if ((getPVC(self)=="120") and getCircuits(self) == "6"):
+                if ((getCable(self)=="120") and getCircuitState(self)<= "6"):
                     return "80(AUS)"
-                if ((getPVC(self)=="185") and getCircuits(self) == "6"):
+                if ((getCable(self)=="185") and getCircuitState(self)<= "6"):
                     return "100(NZ) or 100(AUS)"
-                if ((getPVC(self)=="300") and getCircuits(self) == "6"):
+                if ((getCable(self)=="300") and getCircuitState(self)<= "6"):
                     return "125"
-                if ((getPVC(self)=="500") and getCircuits(self) == "6"):
+                if ((getCable(self)=="500") and getCircuitState(self)<= "6"):
                     return "150"
                 #7
-                if ((getPVC(self)=="35") and getCircuits(self) == "7"):
+                if ((getCable(self)=="35") and getCircuitState(self)<= "7"):
                     return "63"
-                if ((getPVC(self)=="95") and getCircuits(self) == "7"):
+                if ((getCable(self)=="95") and getCircuitState(self)<= "7"):
                     return "80(AUS)"
-                if ((getPVC(self)=="150") and getCircuits(self) == "7"):
+                if ((getCable(self)=="150") and getCircuitState(self)<= "7"):
                     return "100(NZ)"
-                if ((getPVC(self)=="400") and getCircuits(self) == "7"):
+                if ((getCable(self)=="400") and getCircuitState(self)<= "7"):
                     return "150"
                 #8                       
-                if ((getPVC(self)=="70") and getCircuits(self) == "8"):
+                if ((getCable(self)=="70") and getCircuitState(self)<= "8"):
                     return "80(NZ)"
-                if ((getPVC(self)=="150") and getCircuits(self) == "8"):
+                if ((getCable(self)=="150") and getCircuitState(self)<= "8"):
                     return "100(AUS)"
-                if ((getPVC(self)=="240") and getCircuits(self) == "8"):
+                if ((getCable(self)=="240") and getCircuitState(self)<= "8"):
                     return "125"
-                if ((getPVC(self)=="300") and getCircuits(self) == "8"):
+                if ((getCable(self)=="300") and getCircuitState(self)<= "8"):
                     return "150"
                 #9
-                if ((getPVC(self)=="25") and getCircuits(self) == "9"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= "9"):
                     return "63"
-                if ((getPVC(self)=="70") and getCircuits(self) == "9"):
+                if ((getCable(self)=="70") and getCircuitState(self)<= "9"):
                     return "80(AUS)"
-                if ((getPVC(self)=="120") and getCircuits(self) == "9"):
+                if ((getCable(self)=="120") and getCircuitState(self)<= "9"):
                     return "100(NZ)"
 
-                if ((getPVC(self)=="50") and getCircuits(self) == "10"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= "10"):
                     return "80(NZ)"
-                if ((getPVC(self)=="120") and getCircuits(self) == "10"):
+                if ((getCable(self)=="120") and getCircuitState(self)<= "10"):
                     return "100(AUS)"
-                if ((getPVC(self)=="185") and getCircuits(self) == "10"):
+                if ((getCable(self)=="185") and getCircuitState(self)<= "10"):
                     return "125"
-                if ((getPVC(self)=="240") and getCircuits(self) == "10"):
+                if ((getCable(self)=="240") and getCircuitState(self)<= "10"):
                     return "150"
 
-                if ((getPVC(self)=="95") and getCircuits(self) == "11"):
+                if ((getCable(self)=="95") and getCircuitState(self)<= "11"):
                     return "100(NZ)"
                 
-                if ((getPVC(self)=="50") and getCircuits(self) == "12"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= "12"):
                     return "80(AUS)"
-                if ((getPVC(self)=="95") and getCircuits(self) == "12"):
+                if ((getCable(self)=="95") and getCircuitState(self)<= "12"):
                     return "100(AUS)"
-                if ((getPVC(self)=="150") and getCircuits(self) == "12"):
+                if ((getCable(self)=="150") and getCircuitState(self)<= "12"):
                     return "125"
 
-                if ((getPVC(self)=="35") and getCircuits(self) == "15"):
+                if ((getCable(self)=="35") and getCircuitState(self)<= "15"):
                     return "80(AUS)"
-                if ((getPVC(self)=="70") and getCircuits(self) == "15"):
+                if ((getCable(self)=="70") and getCircuitState(self)<= "15"):
                     return "100(NZ)"              
-                if ((getPVC(self)=="120") and getCircuits(self) == "15"):
+                if ((getCable(self)=="120") and getCircuitState(self)<= "15"):
                     return "125"
                 
-                if ((getPVC(self)=="25") and getCircuits(self) == "16"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= "16"):
                     return "80(NZ)"
-                if ((getPVC(self)=="70") and getCircuits(self) == "16"):
+                if ((getCable(self)=="70") and getCircuitState(self)<= "16"):
                     return "100(AUS)"
-                if ((getPVC(self)=="150") and getCircuits(self) == "16"):
+                if ((getCable(self)=="150") and getCircuitState(self)<= "16"):
                     return "150"
                 
-                if ((getPVC(self)=="95") and getCircuits(self) == "18"):
+                if ((getCable(self)=="95") and getCircuitState(self)<= "18"):
                     return "125"
                 
-                if ((getPVC(self)=="25") and getCircuits(self) == "19"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= "19"):
                     return "80(AUS"
-                if ((getPVC(self)=="50") and getCircuits(self) == "19"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= "19"):
                     return "100(NZ)"
                 
-                if ((getPVC(self)=="120") and getCircuits(self) == "20"):
+                if ((getCable(self)=="120") and getCircuitState(self)<= "20"):
                     return "150"
                 
-                if ((getPVC(self)=="50") and getCircuits(self) == "21"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= "21"):
                     return "100(AUS)"
                 
-                if ((getPVC(self)=="35") and getCircuits(self) == "24"):
+                if ((getCable(self)=="35") and getCircuitState(self)<= "24"):
                     return "100(NZ)"
-                if ((getPVC(self)=="70") and getCircuits(self) == "24"):
+                if ((getCable(self)=="70") and getCircuitState(self)<= "24"):
                     return "125"
-                if ((getPVC(self)=="95") and getCircuits(self) == "24"):
+                if ((getCable(self)=="95") and getCircuitState(self)<= "24"):
                     return "150"
 
-                if ((getPVC(self)=="35") and getCircuits(self) == "26"):
+                if ((getCable(self)=="35") and getCircuitState(self)<= "26"):
                     return "100(AUS)"
                 
-                if ((getPVC(self)=="25") and getCircuits(self) == "29"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= "29"):
                     return "100(NZ)"
                 
-                if ((getPVC(self)=="50") and getCircuits(self) == "31"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= "31"):
                     return "125"
-                if ((getPVC(self)=="70") and getCircuits(self) == "31"):
+                if ((getCable(self)=="70") and getCircuitState(self)<= "31"):
                     return "150"
                 
-                if ((getPVC(self)=="35") and getCircuits(self) == "39"):
+                if ((getCable(self)=="35") and getCircuitState(self)<= "39"):
                     return "125"
                 
-                if ((getPVC(self)=="50") and getCircuits(self) == "41"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= "41"):
                     return "150"
                 
-                if ((getPVC(self)=="25") and getCircuits(self) == "48"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= "48"):
                     return "125"
                 
-                if ((getPVC(self)=="35") and getCircuits(self) == "52"):
+                if ((getCable(self)=="35") and getCircuitState(self)<= "52"):
                     return "150"
                 
-                if ((getPVC(self)=="25") and getCircuits(self) == "62"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= "62"):
                     return "150"
                 #CableType AND HEAVY    
                 
                 #1
-                if ((getPVC(self)=="4") and getCircuits(self) == "1"):
+                if ((getCable(self)=="4") and getCircuitState(self)<= "1"):
                     return "20"
-                if ((getPVC(self)=="6") and getCircuits(self) == "1"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= "1"):
                     return "20"
-                if ((getPVC(self)=="10" or getPVC(self)=="16") and getCircuits(self) == "1"):
+                if ((getCable(self)=="10" or getCable(self)=="16") and getCircuitState(self)<= "1"):
                     return "20 or 25"
                 #3
-                if ((getPVC(self)=="2.5") and getCircuits(self) == "3"):
+                if ((getCable(self)=="2.5") and getCircuitState(self)<= int("3")):
                     return "20"
-                if ((getPVC(self)=="4" or getPVC(self)=="6") and getCircuits(self) == "3"):
+                if ((getCable(self)=="4" or getCable(self)=="6") and getCircuitState(self)<= int("3")):
                     return "25"
-                if ((getPVC(self)=="16") and getCircuits(self) == "3"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= int("3")):
                     return "32"
 
                 #4
-                if ((getPVC(self)=="1.5") and getCircuits(self) == "4"):
+                if ((getCable(self)=="1.5") and getCircuitState(self)<= "4"):
                     return "20"
-                if ((getPVC(self)=="10") and getCircuits(self) == "4"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= "4"):
                     return "32"
                 #5
-                if ((getPVC(self)=="1") and getCircuits(self) == "5"):
-                    return "20"
-                if ((getPVC(self)=="2.5") and getCircuits(self) == "5"):
+
+                if ((getCable(self)=="2.5") and getCircuitState(self)<= "5"):
                     return "25"
-                if ((getPVC(self)=="16") and getCircuits(self) == "5"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= "5"):
                     return "40"
                 #6
-                if ((getPVC(self)=="6") and getCircuits(self) == "6"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= "6"):
                     return "32"
-                if ((getPVC(self)=="10") and getCircuits(self) == "6"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= "6"):
                     return "40"
                 #7
-                if ((getPVC(self)=="1.5") and getCircuits(self) == "7"):
+                if ((getCable(self)=="1.5") and getCircuitState(self)<= "7"):
                     return "25"
-                if ((getPVC(self)=="4") and getCircuits(self) == "7"):
+                if ((getCable(self)=="4") and getCircuitState(self)<= "7"):
                     return "32"
                 #8
 
-                if ((getPVC(self)=="16") and getCircuits(self) == "8"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= "8"):
                     return "50"
 
-                #9
-                if ((getPVC(self)=="1") and getCircuits(self) == "9"):
-                    return "25"
-                if ((getPVC(self)=="6") and getCircuits(self) == "9"):
+
+                if ((getCable(self)=="6") and getCircuitState(self)<= "9"):
                     return "40"
                 #10
-                if ((getPVC(self)=="2.5") and getCircuits(self) == "10"):
+                if ((getCable(self)=="2.5") and getCircuitState(self)<= "10"):
                     return "32"
                 #11
-                if ((getPVC(self)=="4") and getCircuits(self) == "11"):
+                if ((getCable(self)=="4") and getCircuitState(self)<= "11"):
                     return "40"
-                if ((getPVC(self)=="10") and getCircuits(self) == "11"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= "11"):
                     return "50"
                 #13
-                if ((getPVC(self)=="1.5") and getCircuits(self) == "13"):
+                if ((getCable(self)=="1.5") and getCircuitState(self)<= "13"):
                     return "32"
-                if ((getPVC(self)=="16") and getCircuits(self) == "13"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= "13"):
                     return "63"
                 #16
-                if ((getPVC(self)=="1") and getCircuits(self) == "16"):
-                    return "32"
-                if ((getPVC(self)=="2.5") and getCircuits(self) == "16"):
+                
+                if ((getCable(self)=="2.5") and getCircuitState(self)<= "16"):
                     return "40"
-                if ((getPVC(self)=="6") and getCircuits(self) == "16"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= "16"):
                     return "50"
                 #18
-                if ((getPVC(self)=="10") and getCircuits(self) == "18"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= "18"):
                     return "63"
                 #19
-                if ((getPVC(self)=="4") and getCircuits(self) == "19"):
+                if ((getCable(self)=="4") and getCircuitState(self)<= "19"):
                     return "50"
                 #19
-                if ((getPVC(self)=="1.5") and getCircuits(self) == "21"):
+                if ((getCable(self)=="1.5") and getCircuitState(self)<= "21"):
                     return "40"
                 #24
-                if ((getPVC(self)=="16") and getCircuits(self) == "24"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= "24"):
                     return "80(NZ)"
                 #24
-                if ((getPVC(self)=="1") and getCircuits(self) == "26"):
-                    return "40"
-                if ((getPVC(self)=="6") and getCircuits(self) == "26"):
+                
+                if ((getCable(self)=="6") and getCircuitState(self)<= "26"):
                     return "63"
                 
-                if ((getPVC(self)=="2.5") and getCircuits(self) == "27"):
+                if ((getCable(self)=="2.5") and getCircuitState(self)<= "27"):
                     return "50"
                 
-                if ((getPVC(self)=="16") and getCircuits(self) == "28"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= "28"):
                     return "82(AUS)"
                 
-                if ((getPVC(self)=="4") and getCircuits(self) == "31"):
+                if ((getCable(self)=="4") and getCircuitState(self)<= "31"):
                     return "63"
 
-                if ((getPVC(self)=="10") and getCircuits(self) == "32"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= "32"):
                     return "80(NZ)"
                 
-                if ((getPVC(self)=="10") and getCircuits(self) == "32"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= "32"):
                     return "80(NZ)"
                 
-                if ((getPVC(self)=="1.5") and getCircuits(self) == "36"):
+                if ((getCable(self)=="1.5") and getCircuitState(self)<= "36"):
                     return "50"
                 
-                if ((getPVC(self)=="1.5") and getCircuits(self) == "36"):
+                if ((getCable(self)=="1.5") and getCircuitState(self)<= "36"):
                     return "50"
                 
-                if ((getPVC(self)=="10") and getCircuits(self) == "38"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= "38"):
                     return "80(AUS)"
 
-                if ((getPVC(self)=="1") and getCircuits(self) == "43"):
-                    return "50"
-                if ((getPVC(self)=="1") and getCircuits(self) == "43"):
+                
+                if ((getCable(self)=="16") and getCircuitState(self)<= "43"):
                     return "100(NZ)"
                 
-                if ((getPVC(self)=="2.5") and getCircuits(self) == "44"):
+                if ((getCable(self)=="2.5") and getCircuitState(self)<= "44"):
                     return "63"
                     
-                if ((getPVC(self)=="16") and getCircuits(self) == "46"):
+                if ((getCable(self)=="16") and getCircuitState(self) <= "46"):
                     return "100(AUS)"
                 
-                if ((getPVC(self)=="6") and getCircuits(self) == "48"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= "48"):
                     return "80(NZ)"
                 
-                if ((getPVC(self)=="6") and getCircuits(self) == "55"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= "55"):
                     return "80(AUS)"
                 
-                if ((getPVC(self)=="4") and getCircuits(self) == "56"):
+                if ((getCable(self)=="4") and getCircuitState(self)<= "56"):
                     return "80(NZ)"
                 
-                if ((getPVC(self)=="10") and getCircuits(self) == "58"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= "58"):
                     return "100(NZ)"
                 
-                if ((getPVC(self)=="1.5") and getCircuits(self) == "59"):
+                if ((getCable(self)=="1.5") and getCircuitState(self)<= "59"):
                     return "63"
                 
-                if ((getPVC(self)=="10") and getCircuits(self) == "63"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= "63"):
                     return "100(AUS)"
                 
-                if ((getPVC(self)=="4") and getCircuits(self) == "64"):
+                if ((getCable(self)=="4") and getCircuitState(self)<= "64"):
                     return "80(AUS)"
                 
-                if ((getPVC(self)=="4") and getCircuits(self) == "64"):
+                if ((getCable(self)=="4") and getCircuitState(self)<= "64"):
                     return "80(AUS)"
                 
-                if ((getPVC(self)=="16") and getCircuits(self) == "70"):
+                if ((getCable(self)=="16") and getCircuitState(self) <= "70"):
                     return "125"
                 
-                if ((getPVC(self)=="1") and getCircuits(self) == "71"):
-                    return "63"
                 
-                if ((getPVC(self)=="2.5") and getCircuits(self) == "79"):
+                
+                if ((getCable(self)=="2.5") and getCircuitState(self)<= "79"):
                     return "80(NZ)"
                 
-                if ((getPVC(self)=="6") and getCircuits(self) == "85"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= "85"):
                     return "100(NZ)"
                 
-                if ((getPVC(self)=="2.5") and getCircuits(self) == "92"):
+                if ((getCable(self)=="2.5") and getCircuitState(self)<= "92"):
                     return "80(AUS)"
 
-                if ((getPVC(self)=="6") and getCircuits(self) == "92"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= "92"):
                     return "100(AUS)"
 
-                if ((getPVC(self)=="16") and getCircuits(self) == "92"):
+                if ((getCable(self)=="16") and getCircuitState(self) <= "92"):
                     return "150"
                 
-                if ((getPVC(self)=="10") and getCircuits(self) == "95"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= "95"):
                     return "125"
                 
-                if ((getPVC(self)=="4") and getCircuits(self) == "99"):
+                if ((getCable(self)=="4") and getCircuitState(self)<= "99"):
                     return "100(NZ)"
                 
-                if ((getPVC(self)=="1") and getCircuits(self) >= '99'):
-                    return "80(NZ), 80(AUS), 100(NZ), 100(AUS), 125 or 150"
+                
 
-                if ((getPVC(self)=="1.5") and getCircuits(self) >= '99'):
+                if ((getCable(self)=="1.5") and getCircuitState(self) >= '99'):
                     return "80(NZ), 80(AUS), 100(NZ), 100(AUS), 125 or 150"
                 
-                if ((getPVC(self)=="2.5") and getCircuits(self) >= '99'):
+                if ((getCable(self)=="2.5") and getCircuitState(self) >= '99'):
                     return "100(NZ), 100(AUS), 125 or 150"
 
 
 
-        ##########          PROBLEM?????????????????????????????????????????????????????
-                if ((getPVC(self)=="4") and (getCircuits(self) <= "99")):
+                if ((getCable(self)=="4") and (getCircuitState(self) <= "99")):
                     return "null"                       
 
-                if ((getPVC(self)=="4") and getCircuits(self) >= "100"):
+                if ((getCable(self)=="4") and getCircuitState(self) >= "100"):
                     return "100(AUS), 125 or 150"
     
-                if ((getPVC(self)=="6") and getCircuits(self) >= '99'):
+                if ((getCable(self)=="6") and getCircuitState(self) >= '99'):
                     return "125 or 150"
                 
-                if ((getPVC(self)=="10") and getCircuits(self) >= '99'):
+                if ((getCable(self)=="10") and getCircuitState(self) >= '99'):
                     return "150"
                     
             if (getConduitType(self)=="Corflo conduit"):
-                if ((getPVC(self)=="16") and getCircuits(self) == "43"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= "43"):
                     return "100(NZ)"
                 
-                if ((getPVC(self)=="16") and getCircuits(self) == "45"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= "45"):
                     return "100(AUS)"
                 
-                if ((getPVC(self)=="10") and getCircuits(self) == "60"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= "60"):
                     return "100(AUS)"
                 
-                if ((getPVC(self)=="6") and getCircuits(self) == "89"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= "89"):
                     return "100(AUS)"
                 
-                if ((getPVC(self)=="10") and getCircuits(self) == "58"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= "58"):
                     return "100(NZ)"
                 
-                if ((getPVC(self)=="6") and getCircuits(self) == "85"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= "85"):
                     return "100(NZ)"
                 
-                if ((getPVC(self)=="4") and getCircuits(self) == "99"):
+                if ((getCable(self)=="4") and getCircuitState(self)<= "99"):
                     return "100(NZ)"
                 
-                if ((getPVC(self)=="4") and getCircuits(self) == "99"):
+                if ((getCable(self)=="4") and getCircuitState(self)<= "99"):
                     return "100(NZ)"
                 
-                if ((getPVC(self)=="16") and getCircuits(self) == "67"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= "67"):
                     return "125"
                 
-                if ((getPVC(self)=="10") and getCircuits(self) == "97"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= "97"):
                     return "125"
                 
-                if ((getPVC(self)=="16") and getCircuits(self) == "88"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= "88"):
                     return "150"
 
-                if ((getPVC(self)=="1" or (getPVC(self)=="1.5" or (getPVC(self)=="2.5"))) and getCircuits(self) >= '99'):
+                if (((getCable(self)=="1.5" or (getCable(self)=="2.5"))) and getCircuitState(self) >= '99'):
                     return "100(NZ), 100(AUS), 125 or 150"
                     
-                if ((getPVC(self)=="4") and getCircuits(self) >= '99'):
+                if ((getCable(self)=="4") and getCircuitState(self) >= '99'):
                     return "100(AUS), 125 or 150"
                     
-                if ((getPVC(self)=="6") and getCircuits(self) >= '99'):
+                if ((getCable(self)=="6") and getCircuitState(self) >= '99'):
                     return "125 or 150"
                     
-                if ((getPVC(self)=="10") and getCircuits(self) >= '99'):
+                if ((getCable(self)=="10") and getCircuitState(self) >= '99'):
                     return "150"
                 
-                if ((getPVC(self)=="630") and getCircuits(self) == "1"):
+                if ((getCable(self)=="630") and getCircuitState(self)<= "1"):
                     return "100(NZ) or 100(AUS)"
                 
-                if ((getPVC(self)=="400" or getPVC(self)=='500') and getCircuits(self) == "3"):
+                if ((getCable(self)=="400" or getCable(self)=='500') and getCircuitState(self)<= int("3")):
                     return "100(NZ) or 100(AUS)"               
-                if ((getPVC(self)=="630") and getCircuits(self) == "3"):
+                if ((getCable(self)=="630") and getCircuitState(self)<= int("3")):
                     return "125"
                 
-                if ((getPVC(self)=="300") and getCircuits(self) == "4"):
+                if ((getCable(self)=="300") and getCircuitState(self)<= "4"):
                     return "100(NZ) or 100(AUS)"               
-                if ((getPVC(self)=="500") and getCircuits(self) == "4"):
+                if ((getCable(self)=="500") and getCircuitState(self)<= "4"):
                     return "125"
-                if ((getPVC(self)=="630") and getCircuits(self) == "4"):
+                if ((getCable(self)=="630") and getCircuitState(self)<= "4"):
                     return "150"
                 
-                if ((getPVC(self)=="240") and getCircuits(self) == "5"):
+                if ((getCable(self)=="240") and getCircuitState(self)<= "5"):
                     return "100(NZ) or 100(AUS)"               
-                if ((getPVC(self)=="400") and getCircuits(self) == "5"):
+                if ((getCable(self)=="400") and getCircuitState(self)<= "5"):
                     return "125"
                 
-                if ((getPVC(self)=="185") and getCircuits(self) == "6"):
+                if ((getCable(self)=="185") and getCircuitState(self)<= "6"):
                     return "100(NZ) or 100(AUS)"               
-                if ((getPVC(self)=="300") and getCircuits(self) == "6"):
+                if ((getCable(self)=="300") and getCircuitState(self)<= "6"):
                     return "125"
-                if ((getPVC(self)=="400" or getPVC(self)=="500") and getCircuits(self) == "6"):
+                if ((getCable(self)=="400" or getCable(self)=="500") and getCircuitState(self)<= "6"):
                     return "150"
                 
-                if ((getPVC(self)=="150") and getCircuits(self) == "7"):
+                if ((getCable(self)=="150") and getCircuitState(self)<= "7"):
                     return "100(NZ)"               
-                if ((getPVC(self)=="240") and getCircuits(self) == "7"):
+                if ((getCable(self)=="240") and getCircuitState(self)<= "7"):
                     return "125"
                 
-                if ((getPVC(self)=="150") and getCircuits(self) == "8"):
+                if ((getCable(self)=="150") and getCircuitState(self)<= "8"):
                     return "100(AUS)"  
-                if ((getPVC(self)=="300") and getCircuits(self) == "8"):
+                if ((getCable(self)=="300") and getCircuitState(self)<= "8"):
                     return "150"  
                 
-                if ((getPVC(self)=="95") and getCircuits(self) == "11"):
+                if ((getCable(self)=="95") and getCircuitState(self)<= "11"):
                     return "100(NZ)"
                 
-                if ((getPVC(self)=="120") and getCircuits(self) == "10"):
+                if ((getCable(self)=="120") and getCircuitState(self)<= "10"):
                     return "100(AUS)" 
-                if ((getPVC(self)=="240") and getCircuits(self) == "10"):
+                if ((getCable(self)=="240") and getCircuitState(self)<= "10"):
                     return "125" 
-                if ((getPVC(self)=="300") and getCircuits(self) == "10"):
+                if ((getCable(self)=="300") and getCircuitState(self)<= "10"):
                     return "150" 
                 
-                if ((getPVC(self)=="95") and getCircuits(self) == "12"):
+                if ((getCable(self)=="95") and getCircuitState(self)<= "12"):
                     return "100(AUS)" 
-                if ((getPVC(self)=="150") and getCircuits(self) == "12"):
+                if ((getCable(self)=="150") and getCircuitState(self)<= "12"):
                     return "125" 
                 
-                if ((getPVC(self)=="185") and getCircuits(self) == "13"):
+                if ((getCable(self)=="185") and getCircuitState(self)<= "13"):
                     return "150" 
                 
-                if ((getPVC(self)=="120") and getCircuits(self) == "14"):
+                if ((getCable(self)=="120") and getCircuitState(self)<= "14"):
                     return "125" 
                 
-                if ((getPVC(self)=="150") and getCircuits(self) == "16"):
+                if ((getCable(self)=="150") and getCircuitState(self)<= "16"):
                     return "150" 
                 
-                if ((getPVC(self)=="95") and getCircuits(self) == "17"):
+                if ((getCable(self)=="95") and getCircuitState(self)<= "17"):
                     return "125" 
                 
-                if ((getPVC(self)=="70") and getCircuits(self) == "15"):
+                if ((getCable(self)=="70") and getCircuitState(self)<= "15"):
                     return "100(NZ) or 100(AUS)" 
                 
-                if ((getPVC(self)=="120") and getCircuits(self) == "19"):
+                if ((getCable(self)=="120") and getCircuitState(self)<= "19"):
                     return "150" 
-                if ((getPVC(self)=="50") and getCircuits(self) == "19"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= "19"):
                     return "100(NZ)" 
                 
-                if ((getPVC(self)=="70") and getCircuits(self) == "20"):
+                if ((getCable(self)=="70") and getCircuitState(self)<= "20"):
                     return "125" 
 
-                if ((getPVC(self)=="70") and getCircuits(self) == "23"):
+                if ((getCable(self)=="70") and getCircuitState(self)<= "23"):
                     return "125" 
-                if ((getPVC(self)=="95") and getCircuits(self) == "23"):
+                if ((getCable(self)=="95") and getCircuitState(self)<= "23"):
                     return "150" 
 
-                if ((getPVC(self)=="35") and getCircuits(self) == "24"):
+                if ((getCable(self)=="35") and getCircuitState(self)<= "24"):
                     return "100(NZ)" 
                 
-                if ((getPVC(self)=="25") and getCircuits(self) == "29"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= "29"):
                     return "100(NZ)" 
                 
-                if ((getPVC(self)=="25") and getCircuits(self) == "30"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= "30"):
                     return "100(AUS)"
-                if ((getPVC(self)=="70") and getCircuits(self) == "30"):
+                if ((getCable(self)=="70") and getCircuitState(self)<= "30"):
                     return "150"
                 
-                if ((getPVC(self)=="35") and getCircuits(self) == "25"):
+                if ((getCable(self)=="35") and getCircuitState(self)<= "25"):
                     return "100(AUS)"
                 
-                if ((getPVC(self)=="50") and getCircuits(self) == "30"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= "30"):
                     return "125"
                 
-                if ((getPVC(self)=="35") and getCircuits(self) == "38"):
+                if ((getCable(self)=="35") and getCircuitState(self)<= "38"):
                     return "125"
                 
-                if ((getPVC(self)=="25") and getCircuits(self) == "45"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= "45"):
                     return "125"
                 
-                if ((getPVC(self)=="25") and getCircuits(self) == "45"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= "45"):
                     return "125"
                 
-                if ((getPVC(self)=="50") and getCircuits(self) == "40"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= "40"):
                     return "150"
                 
-                if ((getPVC(self)=="25") and getCircuits(self) == "60"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= "60"):
                     return "150"
                 
-                if ((getPVC(self)=="35") and getCircuits(self) == "50"):
+                if ((getCable(self)=="35") and getCircuitState(self)<= "50"):
                     return "150"
         
             if (getConduitType(self)=="Medium duty corrugated"):
         
-                if ((getPVC(self)=="4" or getPVC(self)=="6" or getPVC(self)=="10" or getPVC(self)=="16") and getCircuits(self) == "1"):
+                if ((getCable(self)=="4" or getCable(self)=="6" or getCable(self)=="10" or getCable(self)=="16") and getCircuitState(self)<= "1"):
                     return "20"
                 
-                if ((getPVC(self)=="2.5") and getCircuits(self) == "2"):
+                if ((getCable(self)=="2.5") and getCircuitState(self)<= int("2")):
                     return "20"
-                if ((getPVC(self)=="6") and getCircuits(self) == "2"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= int("2")):
                     return "25"
-                if ((getPVC(self)=="16") and getCircuits(self) == "2"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= int("2")):
                     return "32"
                 
-                if ((getPVC(self)=="1.5") and getCircuits(self) == "3"):
+                if ((getCable(self)=="1.5") and getCircuitState(self)<= int("3")):
                     return "20"
-                if ((getPVC(self)=="4") and getCircuits(self) == "3"):
+                if ((getCable(self)=="4") and getCircuitState(self)<= int("3")):
                     return "25"
-                if ((getPVC(self)=="16") and getCircuits(self) == "3"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= int("3")):
                     return "32"
             
-                if ((getPVC(self)=="1") and getCircuits(self) == "4"):
+                if ((getCable(self)=="1") and getCircuitState(self)<= "4"):
                     return "20"
-                if ((getPVC(self)=="2.5") and getCircuits(self) == "4"):
+                if ((getCable(self)=="2.5") and getCircuitState(self)<= "4"):
                     return "25"
-                if ((getPVC(self)=="16") and getCircuits(self) == "4"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= "4"):
                     return "40"
                 
-                if ((getPVC(self)=="6") and getCircuits(self) == "5"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= "5"):
                     return "32"
-                if ((getPVC(self)=="10") and getCircuits(self) == "5"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= "5"):
                     return "40"
                 
-                if ((getPVC(self)=="1.5") and getCircuits(self) == "6"):
+                if ((getCable(self)=="1.5") and getCircuitState(self)<= "6"):
                     return "25"
-                if ((getPVC(self)=="6") and getCircuits(self) == "6"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= "6"):
                     return "32"
                 
-                if ((getPVC(self)=="1") and getCircuits(self) == "7"):
+                if ((getCable(self)=="1") and getCircuitState(self)<= "7"):
                     return "25"
                 
-                if ((getPVC(self)=="2.5") and getCircuits(self) == "8"):
+                if ((getCable(self)=="2.5") and getCircuitState(self)<= "8"):
                     return "32"
                 
-                if ((getPVC(self)=="1.5") and getCircuits(self) == "11"):
+                if ((getCable(self)=="1.5") and getCircuitState(self)<= "11"):
                     return "32"
                 
-                if ((getPVC(self)=="1") and getCircuits(self) == "14"):
+                if ((getCable(self)=="1") and getCircuitState(self)<= "14"):
                     return "32"
                 
-                if ((getPVC(self)=="6") and getCircuits(self) == "8"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= "8"):
                     return "40"
                 
-                if ((getPVC(self)=="1") and getCircuits(self) == "23"):
+                if ((getCable(self)=="1") and getCircuitState(self)<= "23"):
                     return "40"
                 
-                if ((getPVC(self)=="1.5") and getCircuits(self) == "19"):
+                if ((getCable(self)=="1.5") and getCircuitState(self)<= "19"):
                     return "40"
                 
-                if ((getPVC(self)=="2.5") and getCircuits(self) == "14"):
+                if ((getCable(self)=="2.5") and getCircuitState(self)<= "14"):
                     return "40"
                 
-                if ((getPVC(self)=="6") and getCircuits(self) == "10"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= "10"):
                     return "40"
                     
             if (getConduitType(self)=="Medium duty rigid UPVC conduit"):
     
-                if ((getPVC(self)=="16") and getCircuits(self) == "0"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= "0"):
                     return "16"
 
-                if ((getPVC(self)=="2.5" or getPVC(self)=="4" or getPVC(self)=="6" or getPVC(self)=="10") and getCircuits(self) == "1"):
+                if ((getCable(self)=="2.5" or getCable(self)=="4" or getCable(self)=="6" or getCable(self)=="10") and getCircuitState(self)<= "1"):
                     return "16"
-                if ((getPVC(self)=="6" or getPVC(self)=="10" or getPVC(self)=="16") and getCircuits(self) == "1"):
+                if ((getCable(self)=="6" or getCable(self)=="10" or getCable(self)=="16") and getCircuitState(self)<= "1"):
                     return "20"
-                if ((getPVC(self)=="16") and getCircuits(self) == "1"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= "1"):
                     return "35"
                 
-                if ((getPVC(self)=="4") and getCircuits(self) == "2"):
+                if ((getCable(self)=="4") and getCircuitState(self)<= int("2")):
                     return "20"
-                if ((getPVC(self)=="10") and getCircuits(self) == "2"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= int("2")):
                     return "25"
                 
-                if ((getPVC(self)=="1" or getPVC(self)=="1.5") and getCircuits(self) == "3"):
+                if ((getCable(self)=="1" or getCable(self)=="1.5") and getCircuitState(self)<= int("3")):
                     return "16"
-                if ((getPVC(self)=="2.5" ) and getCircuits(self) == "3"):
+                if ((getCable(self)=="2.5" ) and getCircuitState(self)<= int("3")):
                     return "20"
-                if ((getPVC(self)=="6" ) and getCircuits(self) == "3"):
+                if ((getCable(self)=="6" ) and getCircuitState(self)<= int("3")):
                     return "25"
-                if ((getPVC(self)=="16" ) and getCircuits(self) == "3"):
+                if ((getCable(self)=="16" ) and getCircuitState(self)<= int("3")):
                     return "32"
                 
-                if ((getPVC(self)=="1.5" ) and getCircuits(self) == "5"):
-                    return "20"
-                
-                if ((getPVC(self)=="1" ) and getCircuits(self) == "6"):
+                if ((getCable(self)=="1.5" ) and getCircuitState(self)<= "5"):
                     return "20"
                 
-                if ((getPVC(self)=="4" ) and getCircuits(self) == "4"):
+                if ((getCable(self)=="1" ) and getCircuitState(self)<= "6"):
+                    return "20"
+                
+                if ((getCable(self)=="4" ) and getCircuitState(self)<= "4"):
                     return "25"
                 
-                if ((getPVC(self)=="2.5" ) and getCircuits(self) == "6"):
+                if ((getCable(self)=="2.5" ) and getCircuitState(self)<= "6"):
                     return "25"
                 
-                if ((getPVC(self)=="1.5" ) and getCircuits(self) == "8"):
+                if ((getCable(self)=="1.5" ) and getCircuitState(self)<= "8"):
                     return "25"
                 
-                if ((getPVC(self)=="1" ) and getCircuits(self) == "10"):
+                if ((getCable(self)=="1" ) and getCircuitState(self)<= "10"):
                     return "25"
                 
-                if ((getPVC(self)=="10" ) and getCircuits(self) == "4"):
+                if ((getCable(self)=="10" ) and getCircuitState(self)<= "4"):
                     return "32"
                 
-                if ((getPVC(self)=="6" ) and getCircuits(self) == "6"):
+                if ((getCable(self)=="6" ) and getCircuitState(self)<= "6"):
                     return "32"
                 
-                if ((getPVC(self)=="4" ) and getCircuits(self) == "7"):
+                if ((getCable(self)=="4" ) and getCircuitState(self)<= "7"):
                     return "32"
                 
-                if ((getPVC(self)=="2.5" ) and getCircuits(self) == "11"):
+                if ((getCable(self)=="2.5" ) and getCircuitState(self)<= "11"):
                     return "32"
                 
-                if ((getPVC(self)=="1.5" ) and getCircuits(self) == "14"):
+                if ((getCable(self)=="1.5" ) and getCircuitState(self)<= "14"):
                     return "32"
                 
-                if ((getPVC(self)=="1" ) and getCircuits(self) == "17"):
+                if ((getCable(self)=="1" ) and getCircuitState(self)<= "17"):
                     return "32"
 
-                if ((getPVC(self)=="16" ) and getCircuits(self) == "5"):
+                if ((getCable(self)=="16" ) and getCircuitState(self)<= "5"):
                     return "40"
                 
-                if ((getPVC(self)=="10" ) and getCircuits(self) == "7"):
+                if ((getCable(self)=="10" ) and getCircuitState(self)<= "7"):
                     return "40"
                 
-                if ((getPVC(self)=="6" ) and getCircuits(self) == "10"):
+                if ((getCable(self)=="6" ) and getCircuitState(self)<= "10"):
                     return "40"
                 
-                if ((getPVC(self)=="4" ) and getCircuits(self) == "12"):
+                if ((getCable(self)=="4" ) and getCircuitState(self)<= "12"):
                     return "40"
                 
-                if ((getPVC(self)=="2.5" ) and getCircuits(self) == "17"):
+                if ((getCable(self)=="2.5" ) and getCircuitState(self)<= "17"):
                     return "40"
                 
-                if ((getPVC(self)=="1.5" ) and getCircuits(self) == "23"):
+                if ((getCable(self)=="1.5" ) and getCircuitState(self)<= "23"):
                     return "40"
                 
-                if ((getPVC(self)=="1" ) and getCircuits(self) == "28"):
+                if ((getCable(self)=="1" ) and getCircuitState(self)<= "28"):
                     return "40"
                 
 
-                if ((getPVC(self)=="1" ) and getCircuits(self) == "45"):
+                if ((getCable(self)=="1" ) and getCircuitState(self)<= "45"):
                     return "50"
                 
-                if ((getPVC(self)=="1.5" ) and getCircuits(self) == "38"):
+                if ((getCable(self)=="1.5" ) and getCircuitState(self)<= "38"):
                     return "50"
                 
-                if ((getPVC(self)=="2.5" ) and getCircuits(self) == "28"):
+                if ((getCable(self)=="2.5" ) and getCircuitState(self)<= "28"):
                     return "50"
                 
-                if ((getPVC(self)=="4" ) and getCircuits(self) == "20"):
+                if ((getCable(self)=="4" ) and getCircuitState(self)<= "20"):
                     return "50"
                 
-                if ((getPVC(self)=="6" ) and getCircuits(self) == "17"):
+                if ((getCable(self)=="6" ) and getCircuitState(self)<= "17"):
                     return "50"
                 
-                if ((getPVC(self)=="10" ) and getCircuits(self) == "11"):
+                if ((getCable(self)=="10" ) and getCircuitState(self)<= "11"):
                     return "50"
                 
-                if ((getPVC(self)=="16" ) and getCircuits(self) == "8"):
+                if ((getCable(self)=="16" ) and getCircuitState(self)<= "8"):
                     return "50"
                     
             else:
                 return "null"
-        
-        self.conduitResult.configure(text="Number of Conduits: \n" + circuitNo(self))
+
+        # if len(getCircuitState(self))!=0:
+        #     if (getCable(self)!="-"):
+        self.conduitResult.configure(text="Number of Conduits: \n" + circuitNo(self), bg='green2')
             
 master = Tk()
 master.title("Number of Conduits. Table C10")
