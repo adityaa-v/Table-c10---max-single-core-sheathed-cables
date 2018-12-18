@@ -40,6 +40,7 @@ class Application(Frame):
 
         self.getCircuit = IntVar()  
         self.getCircuit = Entry (master) ######## ENTRY BOX
+
         self.getCircuit.grid(row=2, column=1)        
             
         self.btn = Button(master, text="Calculate", bg="light grey", command=self.onButtonClick)
@@ -80,15 +81,21 @@ class Application(Frame):
             self.x = self.cable.get()
             return self.x             
         def getCircuitState(self):
-            self.x = self.getCircuit.get()
-            return int(self.x)
+            self.x = self.getCircuit.get()          
+            
+            try:
+                return int(self.x)
+            except ValueError:
+                return ""
+            except TypeError:
+                return ""
         #end
 
         #error messages 
         # if len(getCircuitState(self))==0:
         #     self.conduitResult.configure(text="Circuit has not been entered ", bg='orange' )       
-        # if (getCable(self)=="-"):
-        #     self.conduitResult.configure(text="Cable length has not been selected ", bg='orange' )      
+        if (getCable(self)=="-"):
+            self.conduitResult.configure(text="Cable length has not been selected ", bg='orange' )      
         # if len(getCircuitState(self))==0:
         #     if (getCable(self)=="-"):
         #         self.conduitResult.configure(text="Please enter some values", bg='red' )
@@ -127,11 +134,11 @@ class Application(Frame):
                 if(getCable(self)=="1" and getCircuitState(self)<= int("71")):
                     return "63"
                 
-                if(getCable(self)=="1" and getCircuitState(self) >= int("99")):
+                if(getCable(self)=="1" and getCircuitState(self) >= int("100")):
                     return "80(NZ), 80(AUS), 100(NZ), 100(AUS), 125 or 150"
         
-                if ((getCable(self)=="25" or getCable(self)=="35" or getCable(self)>=int("50") )
-                    and getCircuitState(self)<= "0"):
+                if ((getCable(self)=="25" or getCable(self)=="35" or getCable(self)=="50" )
+                    and getCircuitState(self)<= int("0")):
                     return '20'
                 
                 if ((getCable(self)=="70" or getCable(self)=="95") and getCircuitState(self)<= int("0")):
@@ -146,8 +153,8 @@ class Application(Frame):
                 if ((getCable(self)=="630") and getCircuitState(self)<= int("0")):
                     return "20, 25, 32, 40, 50 or 63"
 
-                if ((getCable(self)=="25" or getCable(self)<= int("35"))
-                    and getCircuitState(self)<= "1"):
+                if ((getCable(self)=="25" or getCable(self)== "35")
+                    and getCircuitState(self)<= int("1")):
                     return '25 or 32'
                 if ((getCable(self)=="50") and getCircuitState(self)<= int("1")):
                     return "25,	32 or 40"
@@ -197,158 +204,158 @@ class Application(Frame):
                 if ((getCable(self)=="630") and getCircuitState(self)<= int("3")):
                     return "125"
 
-                if ((getCable(self)=="25") and getCircuitState(self)<= "4"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= int("4")):
                     return "50"
-                if ((getCable(self)=="50") and getCircuitState(self)<= "4"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= int("4")):
                     return "63"
-                if ((getCable(self)=="150") and getCircuitState(self)<= "4"):
+                if ((getCable(self)=="150") and getCircuitState(self)<= int("4")):
                     return "80(NZ)"
-                if ((getCable(self)=="185") and getCircuitState(self)<= "4"):
+                if ((getCable(self)=="185") and getCircuitState(self)<= int("4")):
                     return "80(AUS)"
-                if ((getCable(self)=="300") and getCircuitState(self)<= "4"):
+                if ((getCable(self)=="300") and getCircuitState(self)<= int("4")):
                     return "100(NZ) or 100(AUS)"
-                if ((getCable(self)=="500") and getCircuitState(self)<= "4"):
+                if ((getCable(self)=="500") and getCircuitState(self)<= int("4")):
                     return "125"
-                if ((getCable(self)=="630") and getCircuitState(self)<= "4"):
+                if ((getCable(self)=="630") and getCircuitState(self)<= int("4")):
                     return "150"
                 
-                if ((getCable(self)=="25") and getCircuitState(self)<= "5"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= int("5")):
                     return "50"
                 
-                if ((getCable(self)=="120") and getCircuitState(self)<= "5"):
+                if ((getCable(self)=="120") and getCircuitState(self)<= int("5")):
                     return "80(NZ)"
-                if ((getCable(self)=="150") and getCircuitState(self)<= "5"):
+                if ((getCable(self)=="150") and getCircuitState(self)<= int("5")):
                     return "80(AUS)"
-                if ((getCable(self)=="240") and getCircuitState(self)<= "5"):
+                if ((getCable(self)=="240") and getCircuitState(self)<= int("5")):
                     return "100(NZ) or 100(AUS)"
-                if ((getCable(self)=="400") and getCircuitState(self)<= "5"):
+                if ((getCable(self)=="400") and getCircuitState(self)<= int("5")):
                     return "125"
                 
-                if ((getCable(self)=="50") and getCircuitState(self)<= "6"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= int("6")):
                     return "63"
-                if ((getCable(self)=="95") and getCircuitState(self)<= "6"):
+                if ((getCable(self)=="95") and getCircuitState(self)<= int("6")):
                     return "80(NZ)"
-                if ((getCable(self)=="120") and getCircuitState(self)<= "6"):
+                if ((getCable(self)=="120") and getCircuitState(self)<= int("6")):
                     return "80(AUS)"
-                if ((getCable(self)=="185") and getCircuitState(self)<= "6"):
+                if ((getCable(self)=="185") and getCircuitState(self)<= int("6")):
                     return "100(NZ) or 100(AUS)"
-                if ((getCable(self)=="300") and getCircuitState(self)<= "6"):
+                if ((getCable(self)=="300") and getCircuitState(self)<= int("6")):
                     return "125"
-                if ((getCable(self)=="500") and getCircuitState(self)<= "6"):
+                if ((getCable(self)=="500") and getCircuitState(self)<= int("6")):
                     return "150"
                 #7
-                if ((getCable(self)=="35") and getCircuitState(self)<= "7"):
+                if ((getCable(self)=="35") and getCircuitState(self)<= int("7")):
                     return "63"
-                if ((getCable(self)=="95") and getCircuitState(self)<= "7"):
+                if ((getCable(self)=="95") and getCircuitState(self)<= int("7")):
                     return "80(AUS)"
-                if ((getCable(self)=="150") and getCircuitState(self)<= "7"):
+                if ((getCable(self)=="150") and getCircuitState(self)<= int("7")):
                     return "100(NZ)"
-                if ((getCable(self)=="400") and getCircuitState(self)<= "7"):
+                if ((getCable(self)=="400") and getCircuitState(self)<= int("7")):
                     return "150"
                 #8                       
-                if ((getCable(self)=="70") and getCircuitState(self)<= "8"):
+                if ((getCable(self)=="70") and getCircuitState(self)<= int("8")):
                     return "80(NZ)"
-                if ((getCable(self)=="150") and getCircuitState(self)<= "8"):
+                if ((getCable(self)=="150") and getCircuitState(self)<= int("8")):
                     return "100(AUS)"
-                if ((getCable(self)=="240") and getCircuitState(self)<= "8"):
+                if ((getCable(self)=="240") and getCircuitState(self)<= int("8")):
                     return "125"
-                if ((getCable(self)=="300") and getCircuitState(self)<= "8"):
+                if ((getCable(self)=="300") and getCircuitState(self)<= int("8")):
                     return "150"
                 #9
-                if ((getCable(self)=="25") and getCircuitState(self)<= "9"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= int("9")):
                     return "63"
-                if ((getCable(self)=="70") and getCircuitState(self)<= "9"):
+                if ((getCable(self)=="70") and getCircuitState(self)<= int("9")):
                     return "80(AUS)"
-                if ((getCable(self)=="120") and getCircuitState(self)<= "9"):
+                if ((getCable(self)=="120") and getCircuitState(self)<= int("9")):
                     return "100(NZ)"
 
-                if ((getCable(self)=="50") and getCircuitState(self)<= "10"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= int("10")):
                     return "80(NZ)"
-                if ((getCable(self)=="120") and getCircuitState(self)<= "10"):
+                if ((getCable(self)=="120") and getCircuitState(self)<= int("10")):
                     return "100(AUS)"
-                if ((getCable(self)=="185") and getCircuitState(self)<= "10"):
+                if ((getCable(self)=="185") and getCircuitState(self)<= int("10")):
                     return "125"
-                if ((getCable(self)=="240") and getCircuitState(self)<= "10"):
+                if ((getCable(self)=="240") and getCircuitState(self)<= int("10")):
                     return "150"
 
-                if ((getCable(self)=="95") and getCircuitState(self)<= "11"):
+                if ((getCable(self)=="95") and getCircuitState(self)<= int("11")):
                     return "100(NZ)"
                 
-                if ((getCable(self)=="50") and getCircuitState(self)<= "12"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= int("12")):
                     return "80(AUS)"
-                if ((getCable(self)=="95") and getCircuitState(self)<= "12"):
+                if ((getCable(self)=="95") and getCircuitState(self)<= int("12")):
                     return "100(AUS)"
-                if ((getCable(self)=="150") and getCircuitState(self)<= "12"):
+                if ((getCable(self)=="150") and getCircuitState(self)<= int("12")):
                     return "125"
 
-                if ((getCable(self)=="35") and getCircuitState(self)<= "15"):
+                if ((getCable(self)=="35") and getCircuitState(self)<= int("15")):
                     return "80(AUS)"
-                if ((getCable(self)=="70") and getCircuitState(self)<= "15"):
+                if ((getCable(self)=="70") and getCircuitState(self)<= int("15")):
                     return "100(NZ)"              
-                if ((getCable(self)=="120") and getCircuitState(self)<= "15"):
+                if ((getCable(self)=="120") and getCircuitState(self)<= int("15")):
                     return "125"
                 
-                if ((getCable(self)=="25") and getCircuitState(self)<= "16"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= int("16")):
                     return "80(NZ)"
-                if ((getCable(self)=="70") and getCircuitState(self)<= "16"):
+                if ((getCable(self)=="70") and getCircuitState(self)<= int("16")):
                     return "100(AUS)"
-                if ((getCable(self)=="150") and getCircuitState(self)<= "16"):
+                if ((getCable(self)=="150") and getCircuitState(self)<= int("16")):
                     return "150"
                 
-                if ((getCable(self)=="95") and getCircuitState(self)<= "18"):
+                if ((getCable(self)=="95") and getCircuitState(self)<= int("18")):
                     return "125"
                 
-                if ((getCable(self)=="25") and getCircuitState(self)<= "19"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= int("19")):
                     return "80(AUS"
-                if ((getCable(self)=="50") and getCircuitState(self)<= "19"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= int("19")):
                     return "100(NZ)"
                 
-                if ((getCable(self)=="120") and getCircuitState(self)<= "20"):
+                if ((getCable(self)=="120") and getCircuitState(self)<= int("20")):
                     return "150"
                 
-                if ((getCable(self)=="50") and getCircuitState(self)<= "21"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= int("21")):
                     return "100(AUS)"
                 
-                if ((getCable(self)=="35") and getCircuitState(self)<= "24"):
+                if ((getCable(self)=="35") and getCircuitState(self)<= int("24")):
                     return "100(NZ)"
-                if ((getCable(self)=="70") and getCircuitState(self)<= "24"):
+                if ((getCable(self)=="70") and getCircuitState(self)<= int("24")):
                     return "125"
-                if ((getCable(self)=="95") and getCircuitState(self)<= "24"):
+                if ((getCable(self)=="95") and getCircuitState(self)<= int("24")):
                     return "150"
 
-                if ((getCable(self)=="35") and getCircuitState(self)<= "26"):
+                if ((getCable(self)=="35") and getCircuitState(self)<= int("26")):
                     return "100(AUS)"
                 
-                if ((getCable(self)=="25") and getCircuitState(self)<= "29"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= int("29")):
                     return "100(NZ)"
                 
-                if ((getCable(self)=="50") and getCircuitState(self)<= "31"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= int("31")):
                     return "125"
-                if ((getCable(self)=="70") and getCircuitState(self)<= "31"):
+                if ((getCable(self)=="70") and getCircuitState(self)<= int("31")):
                     return "150"
                 
-                if ((getCable(self)=="35") and getCircuitState(self)<= "39"):
+                if ((getCable(self)=="35") and getCircuitState(self)<= int("39")):
                     return "125"
                 
-                if ((getCable(self)=="50") and getCircuitState(self)<= "41"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= int("41")):
                     return "150"
                 
-                if ((getCable(self)=="25") and getCircuitState(self)<= "48"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= int("48")):
                     return "125"
                 
-                if ((getCable(self)=="35") and getCircuitState(self)<= "52"):
+                if ((getCable(self)=="35") and getCircuitState(self)<= int("52")):
                     return "150"
                 
-                if ((getCable(self)=="25") and getCircuitState(self)<= "62"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= int("62")):
                     return "150"
                 #CableType AND HEAVY    
                 
                 #1
-                if ((getCable(self)=="4") and getCircuitState(self)<= "1"):
+                if ((getCable(self)=="4") and getCircuitState(self)<= int("1")):
                     return "20"
-                if ((getCable(self)=="6") and getCircuitState(self)<= "1"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= int("1")):
                     return "20"
-                if ((getCable(self)=="10" or getCable(self)=="16") and getCircuitState(self)<= "1"):
+                if ((getCable(self)=="10" or getCable(self)=="16") and getCircuitState(self)<= int("1")):
                     return "20 or 25"
                 #3
                 if ((getCable(self)=="2.5") and getCircuitState(self)<= int("3")):
@@ -359,223 +366,216 @@ class Application(Frame):
                     return "32"
 
                 #4
-                if ((getCable(self)=="1.5") and getCircuitState(self)<= "4"):
+                if ((getCable(self)=="1.5") and getCircuitState(self)<= int("4")):
                     return "20"
-                if ((getCable(self)=="10") and getCircuitState(self)<= "4"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= int("4")):
                     return "32"
                 #5
 
-                if ((getCable(self)=="2.5") and getCircuitState(self)<= "5"):
+                if ((getCable(self)=="2.5") and getCircuitState(self)<= int("5")):
                     return "25"
-                if ((getCable(self)=="16") and getCircuitState(self)<= "5"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= int("5")):
                     return "40"
                 #6
-                if ((getCable(self)=="6") and getCircuitState(self)<= "6"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= int("6")):
                     return "32"
-                if ((getCable(self)=="10") and getCircuitState(self)<= "6"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= int("6")):
                     return "40"
                 #7
-                if ((getCable(self)=="1.5") and getCircuitState(self)<= "7"):
+                if ((getCable(self)=="1.5") and getCircuitState(self)<= int("7")):
                     return "25"
-                if ((getCable(self)=="4") and getCircuitState(self)<= "7"):
+                if ((getCable(self)=="4") and getCircuitState(self)<= int("7")):
                     return "32"
                 #8
 
-                if ((getCable(self)=="16") and getCircuitState(self)<= "8"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= int("8")):
                     return "50"
 
 
-                if ((getCable(self)=="6") and getCircuitState(self)<= "9"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= int("9")):
                     return "40"
                 #10
-                if ((getCable(self)=="2.5") and getCircuitState(self)<= "10"):
+                if ((getCable(self)=="2.5") and getCircuitState(self)<= int("10")):
                     return "32"
                 #11
-                if ((getCable(self)=="4") and getCircuitState(self)<= "11"):
+                if ((getCable(self)=="4") and getCircuitState(self)<= int("11")):
                     return "40"
-                if ((getCable(self)=="10") and getCircuitState(self)<= "11"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= int("11")):
                     return "50"
                 #13
-                if ((getCable(self)=="1.5") and getCircuitState(self)<= "13"):
+                if ((getCable(self)=="1.5") and getCircuitState(self)<= int("13")):
                     return "32"
-                if ((getCable(self)=="16") and getCircuitState(self)<= "13"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= int("13")):
                     return "63"
                 #16
                 
-                if ((getCable(self)=="2.5") and getCircuitState(self)<= "16"):
+                if ((getCable(self)=="2.5") and getCircuitState(self)<= int("16")):
                     return "40"
-                if ((getCable(self)=="6") and getCircuitState(self)<= "16"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= int("16")):
                     return "50"
                 #18
-                if ((getCable(self)=="10") and getCircuitState(self)<= "18"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= int("18")):
                     return "63"
                 #19
-                if ((getCable(self)=="4") and getCircuitState(self)<= "19"):
+                if ((getCable(self)=="4") and getCircuitState(self)<= int("19")):
                     return "50"
                 #19
-                if ((getCable(self)=="1.5") and getCircuitState(self)<= "21"):
+                if ((getCable(self)=="1.5") and getCircuitState(self)<= int("21")):
                     return "40"
                 #24
-                if ((getCable(self)=="16") and getCircuitState(self)<= "24"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= int("24")):
                     return "80(NZ)"
                 #24
                 
-                if ((getCable(self)=="6") and getCircuitState(self)<= "26"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= int("26")):
                     return "63"
                 
-                if ((getCable(self)=="2.5") and getCircuitState(self)<= "27"):
+                if ((getCable(self)=="2.5") and getCircuitState(self)<= int("27")):
                     return "50"
                 
-                if ((getCable(self)=="16") and getCircuitState(self)<= "28"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= int("28")):
                     return "82(AUS)"
                 
-                if ((getCable(self)=="4") and getCircuitState(self)<= "31"):
+                if ((getCable(self)=="4") and getCircuitState(self)<= int("31")):
                     return "63"
 
-                if ((getCable(self)=="10") and getCircuitState(self)<= "32"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= int("32")):
                     return "80(NZ)"
                 
-                if ((getCable(self)=="10") and getCircuitState(self)<= "32"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= int("32")):
                     return "80(NZ)"
                 
-                if ((getCable(self)=="1.5") and getCircuitState(self)<= "36"):
+                if ((getCable(self)=="1.5") and getCircuitState(self)<= int("36")):
                     return "50"
                 
-                if ((getCable(self)=="1.5") and getCircuitState(self)<= "36"):
+                if ((getCable(self)=="1.5") and getCircuitState(self)<= int("36")):
                     return "50"
                 
-                if ((getCable(self)=="10") and getCircuitState(self)<= "38"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= int("38")):
                     return "80(AUS)"
 
                 
-                if ((getCable(self)=="16") and getCircuitState(self)<= "43"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= int("43")):
                     return "100(NZ)"
                 
-                if ((getCable(self)=="2.5") and getCircuitState(self)<= "44"):
+                if ((getCable(self)=="2.5") and getCircuitState(self)<= int("44")):
                     return "63"
                     
-                if ((getCable(self)=="16") and getCircuitState(self) <= "46"):
+                if ((getCable(self)=="16") and getCircuitState(self) <= int("46")):
                     return "100(AUS)"
                 
-                if ((getCable(self)=="6") and getCircuitState(self)<= "48"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= int("48")):
                     return "80(NZ)"
                 
-                if ((getCable(self)=="6") and getCircuitState(self)<= "55"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= int("55")):
                     return "80(AUS)"
                 
-                if ((getCable(self)=="4") and getCircuitState(self)<= "56"):
+                if ((getCable(self)=="4") and getCircuitState(self)<= int("56")):
                     return "80(NZ)"
                 
-                if ((getCable(self)=="10") and getCircuitState(self)<= "58"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= int("58")):
                     return "100(NZ)"
                 
-                if ((getCable(self)=="1.5") and getCircuitState(self)<= "59"):
+                if ((getCable(self)=="1.5") and getCircuitState(self)<= int("59")):
                     return "63"
                 
-                if ((getCable(self)=="10") and getCircuitState(self)<= "63"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= int("63")):
                     return "100(AUS)"
                 
-                if ((getCable(self)=="4") and getCircuitState(self)<= "64"):
+                if ((getCable(self)=="4") and getCircuitState(self)<= int("64")):
                     return "80(AUS)"
                 
-                if ((getCable(self)=="4") and getCircuitState(self)<= "64"):
+                if ((getCable(self)=="4") and getCircuitState(self)<= int("64")):
                     return "80(AUS)"
                 
-                if ((getCable(self)=="16") and getCircuitState(self) <= "70"):
+                if ((getCable(self)=="16") and getCircuitState(self) <= int("70")):
                     return "125"
                 
                 
                 
-                if ((getCable(self)=="2.5") and getCircuitState(self)<= "79"):
+                if ((getCable(self)=="2.5") and getCircuitState(self)<= int("79")):
                     return "80(NZ)"
                 
-                if ((getCable(self)=="6") and getCircuitState(self)<= "85"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= int("85")):
                     return "100(NZ)"
                 
-                if ((getCable(self)=="2.5") and getCircuitState(self)<= "92"):
+                if ((getCable(self)=="2.5") and getCircuitState(self)<= int("92")):
                     return "80(AUS)"
 
-                if ((getCable(self)=="6") and getCircuitState(self)<= "92"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= int("92")):
                     return "100(AUS)"
 
-                if ((getCable(self)=="16") and getCircuitState(self) <= "92"):
+                if ((getCable(self)=="16") and getCircuitState(self) <= int("92")):
                     return "150"
                 
-                if ((getCable(self)=="10") and getCircuitState(self)<= "95"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= int("95")):
                     return "125"
                 
-                if ((getCable(self)=="4") and getCircuitState(self)<= "99"):
-                    return "100(NZ)"
-                
-                
+                if ((getCable(self)=="4") and getCircuitState(self)<= int("99")):
+                    return "100(NZ)"             
 
-                if ((getCable(self)=="1.5") and getCircuitState(self) >= '99'):
+                if ((getCable(self)=="1.5") and getCircuitState(self) >= int("100")):
                     return "80(NZ), 80(AUS), 100(NZ), 100(AUS), 125 or 150"
                 
-                if ((getCable(self)=="2.5") and getCircuitState(self) >= '99'):
-                    return "100(NZ), 100(AUS), 125 or 150"
+                if ((getCable(self)=="2.5") and getCircuitState(self) >= int("100")):
+                    return "100(NZ), 100(AUS), 125 or 150"                       
 
-
-
-                if ((getCable(self)=="4") and (getCircuitState(self) <= "99")):
-                    return "null"                       
-
-                if ((getCable(self)=="4") and getCircuitState(self) >= "100"):
+                if ((getCable(self)=="4") and getCircuitState(self) >= int("100")):
                     return "100(AUS), 125 or 150"
     
-                if ((getCable(self)=="6") and getCircuitState(self) >= '99'):
+                if ((getCable(self)=="6") and getCircuitState(self) >= int("100")):
                     return "125 or 150"
                 
-                if ((getCable(self)=="10") and getCircuitState(self) >= '99'):
+                if ((getCable(self)=="10") and getCircuitState(self) >= int("100")):
                     return "150"
                     
             if (getConduitType(self)=="Corflo conduit"):
-                if ((getCable(self)=="16") and getCircuitState(self)<= "43"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= int("43")):
                     return "100(NZ)"
                 
-                if ((getCable(self)=="16") and getCircuitState(self)<= "45"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= int("45")):
                     return "100(AUS)"
                 
-                if ((getCable(self)=="10") and getCircuitState(self)<= "60"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= int("60")):
                     return "100(AUS)"
                 
-                if ((getCable(self)=="6") and getCircuitState(self)<= "89"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= int("89")):
                     return "100(AUS)"
                 
-                if ((getCable(self)=="10") and getCircuitState(self)<= "58"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= int("58")):
                     return "100(NZ)"
                 
-                if ((getCable(self)=="6") and getCircuitState(self)<= "85"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= int("85")):
                     return "100(NZ)"
                 
-                if ((getCable(self)=="4") and getCircuitState(self)<= "99"):
+                if ((getCable(self)=="4") and getCircuitState(self)>= int("100")):
                     return "100(NZ)"
                 
-                if ((getCable(self)=="4") and getCircuitState(self)<= "99"):
+                if ((getCable(self)=="4") and getCircuitState(self)>= int("100")):
                     return "100(NZ)"
                 
-                if ((getCable(self)=="16") and getCircuitState(self)<= "67"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= int("67")):
                     return "125"
                 
-                if ((getCable(self)=="10") and getCircuitState(self)<= "97"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= int("97")):
                     return "125"
                 
-                if ((getCable(self)=="16") and getCircuitState(self)<= "88"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= int("88")):
                     return "150"
 
-                if (((getCable(self)=="1.5" or (getCable(self)=="2.5"))) and getCircuitState(self) >= '99'):
+                if (((getCable(self)=="1.5" or (getCable(self)=="2.5"))) and getCircuitState(self) >= int("100")):
                     return "100(NZ), 100(AUS), 125 or 150"
                     
-                if ((getCable(self)=="4") and getCircuitState(self) >= '99'):
+                if ((getCable(self)=="4") and getCircuitState(self) >= int("100")):
                     return "100(AUS), 125 or 150"
                     
-                if ((getCable(self)=="6") and getCircuitState(self) >= '99'):
+                if ((getCable(self)=="6") and getCircuitState(self) >= int("100")):
                     return "125 or 150"
                     
-                if ((getCable(self)=="10") and getCircuitState(self) >= '99'):
+                if ((getCable(self)=="10") and getCircuitState(self) >= int("100")):
                     return "150"
                 
-                if ((getCable(self)=="630") and getCircuitState(self)<= "1"):
+                if ((getCable(self)=="630") and getCircuitState(self)<= int("1")):
                     return "100(NZ) or 100(AUS)"
                 
                 if ((getCable(self)=="400" or getCable(self)=='500') and getCircuitState(self)<= int("3")):
@@ -583,116 +583,116 @@ class Application(Frame):
                 if ((getCable(self)=="630") and getCircuitState(self)<= int("3")):
                     return "125"
                 
-                if ((getCable(self)=="300") and getCircuitState(self)<= "4"):
+                if ((getCable(self)=="300") and getCircuitState(self)<= int("4")):
                     return "100(NZ) or 100(AUS)"               
-                if ((getCable(self)=="500") and getCircuitState(self)<= "4"):
+                if ((getCable(self)=="500") and getCircuitState(self)<= int("4")):
                     return "125"
-                if ((getCable(self)=="630") and getCircuitState(self)<= "4"):
+                if ((getCable(self)=="630") and getCircuitState(self)<= int("4")):
                     return "150"
                 
-                if ((getCable(self)=="240") and getCircuitState(self)<= "5"):
+                if ((getCable(self)=="240") and getCircuitState(self)<= int("5")):
                     return "100(NZ) or 100(AUS)"               
-                if ((getCable(self)=="400") and getCircuitState(self)<= "5"):
+                if ((getCable(self)=="400") and getCircuitState(self)<= int("5")):
                     return "125"
                 
-                if ((getCable(self)=="185") and getCircuitState(self)<= "6"):
+                if ((getCable(self)=="185") and getCircuitState(self)<= int("6")):
                     return "100(NZ) or 100(AUS)"               
-                if ((getCable(self)=="300") and getCircuitState(self)<= "6"):
+                if ((getCable(self)=="300") and getCircuitState(self)<= int("6")):
                     return "125"
-                if ((getCable(self)=="400" or getCable(self)=="500") and getCircuitState(self)<= "6"):
+                if ((getCable(self)=="400" or getCable(self)=="500") and getCircuitState(self)<= int("6")):
                     return "150"
                 
-                if ((getCable(self)=="150") and getCircuitState(self)<= "7"):
+                if ((getCable(self)=="150") and getCircuitState(self)<= int("7")):
                     return "100(NZ)"               
-                if ((getCable(self)=="240") and getCircuitState(self)<= "7"):
+                if ((getCable(self)=="240") and getCircuitState(self)<= int("7")):
                     return "125"
                 
-                if ((getCable(self)=="150") and getCircuitState(self)<= "8"):
+                if ((getCable(self)=="150") and getCircuitState(self)<= int("8")):
                     return "100(AUS)"  
-                if ((getCable(self)=="300") and getCircuitState(self)<= "8"):
+                if ((getCable(self)=="300") and getCircuitState(self)<= int("8")):
                     return "150"  
                 
-                if ((getCable(self)=="95") and getCircuitState(self)<= "11"):
+                if ((getCable(self)=="95") and getCircuitState(self)<= int("11")):
                     return "100(NZ)"
                 
-                if ((getCable(self)=="120") and getCircuitState(self)<= "10"):
+                if ((getCable(self)=="120") and getCircuitState(self)<= int("10")):
                     return "100(AUS)" 
-                if ((getCable(self)=="240") and getCircuitState(self)<= "10"):
+                if ((getCable(self)=="240") and getCircuitState(self)<= int("10")):
                     return "125" 
-                if ((getCable(self)=="300") and getCircuitState(self)<= "10"):
+                if ((getCable(self)=="300") and getCircuitState(self)<= int("10")):
                     return "150" 
                 
-                if ((getCable(self)=="95") and getCircuitState(self)<= "12"):
+                if ((getCable(self)=="95") and getCircuitState(self)<= int("12")):
                     return "100(AUS)" 
-                if ((getCable(self)=="150") and getCircuitState(self)<= "12"):
+                if ((getCable(self)=="150") and getCircuitState(self)<= int("12")):
                     return "125" 
                 
-                if ((getCable(self)=="185") and getCircuitState(self)<= "13"):
+                if ((getCable(self)=="185") and getCircuitState(self)<= int("13")):
                     return "150" 
                 
-                if ((getCable(self)=="120") and getCircuitState(self)<= "14"):
+                if ((getCable(self)=="120") and getCircuitState(self)<= int("14")):
                     return "125" 
                 
-                if ((getCable(self)=="150") and getCircuitState(self)<= "16"):
+                if ((getCable(self)=="150") and getCircuitState(self)<= int("16")):
                     return "150" 
                 
-                if ((getCable(self)=="95") and getCircuitState(self)<= "17"):
+                if ((getCable(self)=="95") and getCircuitState(self)<= int("17")):
                     return "125" 
                 
-                if ((getCable(self)=="70") and getCircuitState(self)<= "15"):
+                if ((getCable(self)=="70") and getCircuitState(self)<= int("15")):
                     return "100(NZ) or 100(AUS)" 
                 
-                if ((getCable(self)=="120") and getCircuitState(self)<= "19"):
+                if ((getCable(self)=="120") and getCircuitState(self)<= int("19")):
                     return "150" 
-                if ((getCable(self)=="50") and getCircuitState(self)<= "19"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= int("19")):
                     return "100(NZ)" 
                 
-                if ((getCable(self)=="70") and getCircuitState(self)<= "20"):
+                if ((getCable(self)=="70") and getCircuitState(self)<= int("20")):
                     return "125" 
 
-                if ((getCable(self)=="70") and getCircuitState(self)<= "23"):
+                if ((getCable(self)=="70") and getCircuitState(self)<= int("23")):
                     return "125" 
-                if ((getCable(self)=="95") and getCircuitState(self)<= "23"):
+                if ((getCable(self)=="95") and getCircuitState(self)<= int("23")):
                     return "150" 
 
-                if ((getCable(self)=="35") and getCircuitState(self)<= "24"):
+                if ((getCable(self)=="35") and getCircuitState(self)<= int("24")):
                     return "100(NZ)" 
                 
-                if ((getCable(self)=="25") and getCircuitState(self)<= "29"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= int("29")):
                     return "100(NZ)" 
                 
-                if ((getCable(self)=="25") and getCircuitState(self)<= "30"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= int("30")):
                     return "100(AUS)"
-                if ((getCable(self)=="70") and getCircuitState(self)<= "30"):
+                if ((getCable(self)=="70") and getCircuitState(self)<= int("30")):
                     return "150"
                 
-                if ((getCable(self)=="35") and getCircuitState(self)<= "25"):
+                if ((getCable(self)=="35") and getCircuitState(self)<= int("25")):
                     return "100(AUS)"
                 
-                if ((getCable(self)=="50") and getCircuitState(self)<= "30"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= int("30")):
                     return "125"
                 
-                if ((getCable(self)=="35") and getCircuitState(self)<= "38"):
+                if ((getCable(self)=="35") and getCircuitState(self)<= int("38")):
                     return "125"
                 
-                if ((getCable(self)=="25") and getCircuitState(self)<= "45"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= int("45")):
                     return "125"
                 
-                if ((getCable(self)=="25") and getCircuitState(self)<= "45"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= int("45")):
                     return "125"
                 
-                if ((getCable(self)=="50") and getCircuitState(self)<= "40"):
+                if ((getCable(self)=="50") and getCircuitState(self)<= int("40")):
                     return "150"
                 
-                if ((getCable(self)=="25") and getCircuitState(self)<= "60"):
+                if ((getCable(self)=="25") and getCircuitState(self)<= int("60")):
                     return "150"
                 
-                if ((getCable(self)=="35") and getCircuitState(self)<= "50"):
+                if ((getCable(self)=="35") and getCircuitState(self)<= int("50")):
                     return "150"
         
             if (getConduitType(self)=="Medium duty corrugated"):
         
-                if ((getCable(self)=="4" or getCable(self)=="6" or getCable(self)=="10" or getCable(self)=="16") and getCircuitState(self)<= "1"):
+                if ((getCable(self)=="4" or getCable(self)=="6" or getCable(self)=="10" or getCable(self)=="16") and getCircuitState(self)<= int("1")):
                     return "20"
                 
                 if ((getCable(self)=="2.5") and getCircuitState(self)<= int("2")):
@@ -709,60 +709,60 @@ class Application(Frame):
                 if ((getCable(self)=="16") and getCircuitState(self)<= int("3")):
                     return "32"
             
-                if ((getCable(self)=="1") and getCircuitState(self)<= "4"):
+                if ((getCable(self)=="1") and getCircuitState(self)<= int("4")):
                     return "20"
-                if ((getCable(self)=="2.5") and getCircuitState(self)<= "4"):
+                if ((getCable(self)=="2.5") and getCircuitState(self)<= int("4")):
                     return "25"
-                if ((getCable(self)=="16") and getCircuitState(self)<= "4"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= int("4")):
                     return "40"
                 
-                if ((getCable(self)=="6") and getCircuitState(self)<= "5"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= int("5")):
                     return "32"
-                if ((getCable(self)=="10") and getCircuitState(self)<= "5"):
+                if ((getCable(self)=="10") and getCircuitState(self)<= int("5")):
                     return "40"
                 
-                if ((getCable(self)=="1.5") and getCircuitState(self)<= "6"):
+                if ((getCable(self)=="1.5") and getCircuitState(self)<= int("6")):
                     return "25"
-                if ((getCable(self)=="6") and getCircuitState(self)<= "6"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= int("6")):
                     return "32"
                 
-                if ((getCable(self)=="1") and getCircuitState(self)<= "7"):
+                if ((getCable(self)=="1") and getCircuitState(self)<= int("7")):
                     return "25"
                 
-                if ((getCable(self)=="2.5") and getCircuitState(self)<= "8"):
+                if ((getCable(self)=="2.5") and getCircuitState(self)<= int("8")):
                     return "32"
                 
-                if ((getCable(self)=="1.5") and getCircuitState(self)<= "11"):
+                if ((getCable(self)=="1.5") and getCircuitState(self)<= int("11")):
                     return "32"
                 
-                if ((getCable(self)=="1") and getCircuitState(self)<= "14"):
+                if ((getCable(self)=="1") and getCircuitState(self)<= int("14")):
                     return "32"
                 
-                if ((getCable(self)=="6") and getCircuitState(self)<= "8"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= int("8")):
                     return "40"
                 
-                if ((getCable(self)=="1") and getCircuitState(self)<= "23"):
+                if ((getCable(self)=="1") and getCircuitState(self)<= int("23")):
                     return "40"
                 
-                if ((getCable(self)=="1.5") and getCircuitState(self)<= "19"):
+                if ((getCable(self)=="1.5") and getCircuitState(self)<= int("19")):
                     return "40"
                 
-                if ((getCable(self)=="2.5") and getCircuitState(self)<= "14"):
+                if ((getCable(self)=="2.5") and getCircuitState(self)<= int("14")):
                     return "40"
                 
-                if ((getCable(self)=="6") and getCircuitState(self)<= "10"):
+                if ((getCable(self)=="6") and getCircuitState(self)<= int("10")):
                     return "40"
                     
             if (getConduitType(self)=="Medium duty rigid UPVC conduit"):
     
-                if ((getCable(self)=="16") and getCircuitState(self)<= "0"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= int("0")):
                     return "16"
 
-                if ((getCable(self)=="2.5" or getCable(self)=="4" or getCable(self)=="6" or getCable(self)=="10") and getCircuitState(self)<= "1"):
+                if ((getCable(self)=="2.5" or getCable(self)=="4" or getCable(self)=="6" or getCable(self)=="10") and getCircuitState(self)<= int("1")):
                     return "16"
-                if ((getCable(self)=="6" or getCable(self)=="10" or getCable(self)=="16") and getCircuitState(self)<= "1"):
+                if ((getCable(self)=="6" or getCable(self)=="10" or getCable(self)=="16") and getCircuitState(self)<= int("1")):
                     return "20"
-                if ((getCable(self)=="16") and getCircuitState(self)<= "1"):
+                if ((getCable(self)=="16") and getCircuitState(self)<= int("1")):
                     return "35"
                 
                 if ((getCable(self)=="4") and getCircuitState(self)<= int("2")):
@@ -779,91 +779,98 @@ class Application(Frame):
                 if ((getCable(self)=="16" ) and getCircuitState(self)<= int("3")):
                     return "32"
                 
-                if ((getCable(self)=="1.5" ) and getCircuitState(self)<= "5"):
+                if ((getCable(self)=="1.5" ) and getCircuitState(self)<= int("5")):
                     return "20"
                 
-                if ((getCable(self)=="1" ) and getCircuitState(self)<= "6"):
+                if ((getCable(self)=="1" ) and getCircuitState(self)<= int("6")):
                     return "20"
                 
-                if ((getCable(self)=="4" ) and getCircuitState(self)<= "4"):
+                if ((getCable(self)=="4" ) and getCircuitState(self)<= int("4")):
                     return "25"
                 
-                if ((getCable(self)=="2.5" ) and getCircuitState(self)<= "6"):
+                if ((getCable(self)=="2.5" ) and getCircuitState(self)<= int("6")):
                     return "25"
                 
-                if ((getCable(self)=="1.5" ) and getCircuitState(self)<= "8"):
+                if ((getCable(self)=="1.5" ) and getCircuitState(self)<= int("8")):
                     return "25"
                 
-                if ((getCable(self)=="1" ) and getCircuitState(self)<= "10"):
+                if ((getCable(self)=="1" ) and getCircuitState(self)<= int("10")):
                     return "25"
                 
-                if ((getCable(self)=="10" ) and getCircuitState(self)<= "4"):
+                if ((getCable(self)=="10" ) and getCircuitState(self)<= int("4")):
                     return "32"
                 
-                if ((getCable(self)=="6" ) and getCircuitState(self)<= "6"):
+                if ((getCable(self)=="6" ) and getCircuitState(self)<= int("6")):
                     return "32"
                 
-                if ((getCable(self)=="4" ) and getCircuitState(self)<= "7"):
+                if ((getCable(self)=="4" ) and getCircuitState(self)<= int("7")):
                     return "32"
                 
-                if ((getCable(self)=="2.5" ) and getCircuitState(self)<= "11"):
+                if ((getCable(self)=="2.5" ) and getCircuitState(self)<= int("11")):
                     return "32"
                 
-                if ((getCable(self)=="1.5" ) and getCircuitState(self)<= "14"):
+                if ((getCable(self)=="1.5" ) and getCircuitState(self)<= int("14")):
                     return "32"
                 
-                if ((getCable(self)=="1" ) and getCircuitState(self)<= "17"):
+                if ((getCable(self)=="1" ) and getCircuitState(self)<= int("17")):
                     return "32"
 
-                if ((getCable(self)=="16" ) and getCircuitState(self)<= "5"):
+                if ((getCable(self)=="16" ) and getCircuitState(self)<= int("5")):
                     return "40"
                 
-                if ((getCable(self)=="10" ) and getCircuitState(self)<= "7"):
+                if ((getCable(self)=="10" ) and getCircuitState(self)<= int("7")):
                     return "40"
                 
-                if ((getCable(self)=="6" ) and getCircuitState(self)<= "10"):
+                if ((getCable(self)=="6" ) and getCircuitState(self)<= int("10")):
                     return "40"
                 
-                if ((getCable(self)=="4" ) and getCircuitState(self)<= "12"):
+                if ((getCable(self)=="4" ) and getCircuitState(self)<= int("12")):
                     return "40"
                 
-                if ((getCable(self)=="2.5" ) and getCircuitState(self)<= "17"):
+                if ((getCable(self)=="2.5" ) and getCircuitState(self)<= int("17")):
                     return "40"
                 
-                if ((getCable(self)=="1.5" ) and getCircuitState(self)<= "23"):
+                if ((getCable(self)=="1.5" ) and getCircuitState(self)<= int("23")):
                     return "40"
                 
-                if ((getCable(self)=="1" ) and getCircuitState(self)<= "28"):
+                if ((getCable(self)=="1" ) and getCircuitState(self)<= int("28")):
                     return "40"
                 
 
-                if ((getCable(self)=="1" ) and getCircuitState(self)<= "45"):
+                if ((getCable(self)=="1" ) and getCircuitState(self)<= int("45")):
                     return "50"
                 
-                if ((getCable(self)=="1.5" ) and getCircuitState(self)<= "38"):
+                if ((getCable(self)=="1.5" ) and getCircuitState(self)<= int("38")):
                     return "50"
                 
-                if ((getCable(self)=="2.5" ) and getCircuitState(self)<= "28"):
+                if ((getCable(self)=="2.5" ) and getCircuitState(self)<= int("28")):
                     return "50"
                 
-                if ((getCable(self)=="4" ) and getCircuitState(self)<= "20"):
+                if ((getCable(self)=="4" ) and getCircuitState(self)<= int("20")):
                     return "50"
                 
-                if ((getCable(self)=="6" ) and getCircuitState(self)<= "17"):
+                if ((getCable(self)=="6" ) and getCircuitState(self)<= int("17")):
                     return "50"
                 
-                if ((getCable(self)=="10" ) and getCircuitState(self)<= "11"):
+                if ((getCable(self)=="10" ) and getCircuitState(self)<= int("11")):
                     return "50"
                 
-                if ((getCable(self)=="16" ) and getCircuitState(self)<= "8"):
+                if ((getCable(self)=="16" ) and getCircuitState(self)<= int("8")):
                     return "50"
                     
             else:
-                return "null"
+                return "Invalid input, please check again"
 
         # if len(getCircuitState(self))!=0:
         #     if (getCable(self)!="-"):
+
+        
         self.conduitResult.configure(text="Number of Conduits: \n" + circuitNo(self), bg='green2')
+        
+    
+    
+    
+
             
 master = Tk()
 master.title("Number of Conduits. Table C10")
