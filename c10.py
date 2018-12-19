@@ -868,12 +868,9 @@ class Application(Frame):
         self.conduitResult.configure(text="Number of Conduits: \n" + circuitNo(self), bg='green2')
         
     
-    
-    
-
             
 master = Tk()
-master.title("Number of Conduits. Table C10")
+master.title("Guide to Max No. of Single-Core Sheather Calbes Installed in Conduit. Table C10")
 master.geometry("750x175")
 app = Application(master)
 
