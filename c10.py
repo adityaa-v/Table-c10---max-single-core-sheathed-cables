@@ -82,25 +82,12 @@ class Application(Frame):
             return self.x             
         def getCircuitState(self):
             self.x = self.getCircuit.get()          
-            
-            try:
-                return int(self.x)
-            except ValueError:
-                return ""
-            except TypeError:
-                return ""
-        #end
+            return int(self.x)
 
-        #error messages 
-        # if len(getCircuitState(self))==0:
-        #     self.conduitResult.configure(text="Circuit has not been entered ", bg='orange' )       
+
         if (getCable(self)=="-"):
             self.conduitResult.configure(text="Cable length has not been selected ", bg='orange' )      
-        # if len(getCircuitState(self))==0:
-        #     if (getCable(self)=="-"):
-        #         self.conduitResult.configure(text="Please enter some values", bg='red' )
-        
-        #end       
+
 
         self.conduitTypeResult.configure(text="Conduit Type:  " + self.conduit.get(), font='Helvetica 9 bold')
 
