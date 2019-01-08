@@ -83,6 +83,7 @@ class Application(Frame):
         def getCircuitState(self):
             self.x = self.getCircuit.get()          
             return int(self.x)
+        
 
 
         if (getCable(self)=="-"):
@@ -823,7 +824,6 @@ class Application(Frame):
                 if ((getCable(self)=="1" ) and getCircuitState(self)<= int("28")):
                     return "40"
                 
-
                 if ((getCable(self)=="1" ) and getCircuitState(self)<= int("45")):
                     return "50"
                 
@@ -847,13 +847,10 @@ class Application(Frame):
                     
             else:
                 return "Invalid input, please check again"
-
-        # if len(getCircuitState(self))!=0:
-        #     if (getCable(self)!="-"):
-
         
         self.conduitResult.configure(text="Number of Conduits: \n" + circuitNo(self), bg='green2')
-        
+        if(self.conduitResult=="Invalid input, please check again"):
+            self.conduitResult.configure(bg='red')
     
             
 master = Tk()
