@@ -38,7 +38,7 @@ class Application(Frame):
         self.circuitLbl = Label (master, text = "Number of Circuits:", height=1, width=20) #Label
         self.circuitLbl.grid(row=2, column = 0)
 
-        self.getCircuit = IntVar()  
+        self.getCircuit = StringVar()  
         self.getCircuit = Entry (master) ######## ENTRY BOX
 
         self.getCircuit.grid(row=2, column=1)        
@@ -60,7 +60,18 @@ class Application(Frame):
 
         self.close = Button(master, text="Close", bg="light grey", command=master.destroy)
         self.close.grid(row = 4,column=0) 
-   
+
+        def openImage():
+            control = Toplevel()
+            canvas = Canvas(control, width=1172, height=704)
+            canvas.pack(expand = YES, fill = BOTH)
+            png1 = PhotoImage(file='C:\\Users\\Aditya.Verma\\Documents\\GitHub\\Table-c10---max-single-core-sheathed-cables\\Capture.PNG')
+            canvas.create_image(0, 0, image = png1, anchor = NW)
+            canvas.png1 = png1
+
+        self.openImage = Button(master, text="Open Table", bg="light grey", command=openImage)#image open button
+        self.openImage.grid(row=4, column = 1)
+
         def reset():
              self.PVCResult.configure(text="" )
              self.conduitTypeResult.configure(text="-" )
@@ -85,10 +96,8 @@ class Application(Frame):
             return int(self.x)
         
 
-
-        if (getCable(self)=="-"):
-            self.conduitResult.configure(text="Cable length has not been selected ", bg='orange' )      
-
+        if not self.getCircuit.get():
+            self.conduitResult.configure(text="No. of Circuits has not been selected ", bg='orange' )      
 
         self.conduitTypeResult.configure(text="Conduit Type:  " + self.conduit.get(), font='Helvetica 9 bold')
 
@@ -98,6 +107,8 @@ class Application(Frame):
             self.PVCResult.configure(text="CableType:  " + self.cable.get(),font='Helvetica 9 bold' )
         
         self.circuitNo.configure(text="Number of Circuits:  "+ self.getCircuit.get(), font='Helvetica 9 bold')
+
+        
 
         def circuitNo(self):
 
@@ -849,9 +860,8 @@ class Application(Frame):
                 return "Invalid input, please check again"
         
         self.conduitResult.configure(text="Number of Conduits: \n" + circuitNo(self), bg='green2')
-        if(self.conduitResult=="Invalid input, please check again"):
+        if (circuitNo(self)=="Invalid input, please check again"):
             self.conduitResult.configure(bg='red')
-    
             
 master = Tk()
 master.title("Guide to Max No. of Single-Core Sheather Calbes Installed in Conduit. Table C10")
