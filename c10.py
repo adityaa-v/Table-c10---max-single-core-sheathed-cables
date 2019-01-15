@@ -46,18 +46,25 @@ class Application(Frame):
         self.btn = Button(master, text="Calculate", bg="light grey", command=self.onButtonClick)
         self.btn.grid(row = 3,column=1)           
 
-        self.conduitTypeResult = Label (master, text = "Conduit Type-> ", height=1, width=40) #Label
+        self.conduitTypeResult = Label (master, text = "Conduit Type: ", height=1, width=40) #Label
         self.conduitTypeResult.grid(row=0, column =2) 
 
-        self.PVCResult = Label (master, text = "Cable Type-> ", height=2, width=25) #Label
+        self.PVCResult = Label (master, text = "Cable Type: ", height=2, width=25) #Label
         self.PVCResult.grid(row=1, column =2)    
 
-        self.circuitNo = Label (master, text = "Number of Circuits-> ", height=2, width=25) #Label
+        self.circuitNo = Label (master, text = "Number of Circuits: ", height=2, width=25) #Label
         self.circuitNo.grid(row=2, column =2)   
 
         self.conduitResult = Label (master, text = "-", height=2, width=40, font='Helvetica 9 bold') #Label
         self.conduitResult.grid(row=3, column =2)    
 
+        self.disclaimerText = Label (master, text = """DISCLAIMER\n Please refer to the Table (can be accessed by clicking Open Table button)
+         to confirm the results before practically applying the Number Of Conduits. Each output has not been tested thus 
+         caution should be taken when using this program.\n
+         REFERENCE: AS/NZ 3000:2018 Electrical Installations (known as the Australian/New Zealand Wiring Rules)"""
+        ,font='Helvetica 9 bold') #Label
+        self.disclaimerText.grid(row=6, rowspan=2, column=0, columnspan=3, sticky=W)    
+        
         self.close = Button(master, text="Close", bg="light grey", command=master.destroy)
         self.close.grid(row = 4,column=0) 
 
@@ -78,14 +85,25 @@ class Application(Frame):
              self.PVCResult.configure(text="-" )
              self.conduit.set("Heavy duty rigid UPVC conduit")
              self.cable.set("-")
+             self.circuitNo.configure(text="-")
+             self.conduitResult.configure(text="-", bg='gray85', borderwidth=2, relief='flat')
+
 
         self.tableview = Button(master, text="Reset", bg="light grey", command=reset)
         self.tableview.grid(row = 3,column=0) 
 
+        if (self.cable.get()=='-'):
+            self.btn.config(state=DISABLED)
+        
+        if (self.cable.get()=="1", "1.5", "2.5", "4" , "6" ,"10" ,"16", "25", "35", "50", "70" , "95" ,"120" ,"150","185","240","300",
+        "400","500","630"):
+            self.btn.config(state=NORMAL)
+        
+    
     def onButtonClick(self):
         
         #get values
-        def getConduitType(self):
+        def getConduitType(self): #type of conduit
             self.x = self.conduit.get()
             return self.x
         def getCable(self):
@@ -97,14 +115,12 @@ class Application(Frame):
         
 
         if not self.getCircuit.get():
-            self.conduitResult.configure(text="No. of Circuits has not been selected ", bg='orange' )      
+            self.conduitResult.configure(text="Error: Missing Values", bg='orange' )      
 
         self.conduitTypeResult.configure(text="Conduit Type:  " + self.conduit.get(), font='Helvetica 9 bold')
 
-        if (getCable(self)=="-"):
-            self.PVCResult.configure(text="-")
-        else:
-            self.PVCResult.configure(text="CableType:  " + self.cable.get(),font='Helvetica 9 bold' )
+        
+        self.PVCResult.configure(text="CableType:  " + self.cable.get(),font='Helvetica 9 bold' )
         
         self.circuitNo.configure(text="Number of Circuits:  "+ self.getCircuit.get(), font='Helvetica 9 bold')
 
@@ -859,13 +875,13 @@ class Application(Frame):
             else:
                 return "Invalid input, please check again"
         
-        self.conduitResult.configure(text="Number of Conduits: \n" + circuitNo(self), bg='green2')
+        self.conduitResult.configure(text="Number of Conduits: \n" + circuitNo(self), bg='green2', borderwidth="1", relief="raised")
         if (circuitNo(self)=="Invalid input, please check again"):
-            self.conduitResult.configure(bg='red')
+            self.conduitResult.configure(bg='red', borderwidth="2", relief="sunken")
             
 master = Tk()
 master.title("Guide to Max No. of Single-Core Sheather Calbes Installed in Conduit. Table C10")
-master.geometry("750x175")
+master.geometry("700x275")
 app = Application(master)
 
 master.mainloop()
