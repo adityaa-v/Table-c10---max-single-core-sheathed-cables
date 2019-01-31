@@ -58,7 +58,7 @@ class Application(Frame):
         self.conduitResult = Label (master, text = "-", height=2, width=40, font='Helvetica 9 bold') #Label
         self.conduitResult.grid(row=3, column =2)    
 
-        self.disclaimerText = Label (master, text = """DISCLAIMER\n Please refer to the Table (can be accessed by clicking Open Table button)
+        self.disclaimerText = Label (master, text = """DISCLAIMER\n Please refer to Table C10 (can be viewed by clicking Open Table button)
          to confirm the results before practically applying the Number Of Conduits. Each output has not been tested thus 
          caution should be taken when using this program.\n
          REFERENCE: AS/NZ 3000:2018 Electrical Installations (known as the Australian/New Zealand Wiring Rules)"""
@@ -68,7 +68,13 @@ class Application(Frame):
         self.close = Button(master, text="Close", bg="light grey", command=master.destroy)
         self.close.grid(row = 4,column=0) 
 
-        def openImage():
+        self.canvas = Canvas(master, width=99, height=29)
+        self.canvas.grid(row=4, column=2)
+        self.logo = PhotoImage(file='C:\\Users\\Aditya.Verma\\Documents\\GitHub\\Table-c10---max-single-core-sheathed-cables\\Lucid Logo.PNG')
+        self.canvas.create_image(0, 0, image = self.logo, anchor = NW)
+        self.canvas.logo = self.logo   
+
+        def openImage(): ### opens table
             control = Toplevel()
             canvas = Canvas(control, width=1172, height=704)
             canvas.pack(expand = YES, fill = BOTH)
@@ -87,7 +93,6 @@ class Application(Frame):
              self.cable.set("-")
              self.circuitNo.configure(text="-")
              self.conduitResult.configure(text="-", bg='gray85', borderwidth=2, relief='flat')
-
 
         self.tableview = Button(master, text="Reset", bg="light grey", command=reset)
         self.tableview.grid(row = 3,column=0) 
@@ -118,13 +123,10 @@ class Application(Frame):
             self.conduitResult.configure(text="Error: Missing Values", bg='orange' )      
 
         self.conduitTypeResult.configure(text="Conduit Type:  " + self.conduit.get(), font='Helvetica 9 bold')
-
-        
+       
         self.PVCResult.configure(text="CableType:  " + self.cable.get(),font='Helvetica 9 bold' )
         
         self.circuitNo.configure(text="Number of Circuits:  "+ self.getCircuit.get(), font='Helvetica 9 bold')
-
-        
 
         def circuitNo(self):
 
@@ -876,8 +878,10 @@ class Application(Frame):
                 return "Invalid input, please check again"
         
         self.conduitResult.configure(text="Number of Conduits: \n" + circuitNo(self), bg='green2', borderwidth="1", relief="raised")
+        
         if (circuitNo(self)=="Invalid input, please check again"):
-            self.conduitResult.configure(bg='red', borderwidth="2", relief="sunken")
+            self.conduitResult.configure(bg='firebrick1', borderwidth="2", relief="sunken")
+            self.circuitNo.configure(text="Number of Circuits: - "+ self.getCircuit.get(), font='Helvetica 9 bold')
             
 master = Tk()
 master.title("Guide to Max No. of Single-Core Sheather Calbes Installed in Conduit. Table C10")
